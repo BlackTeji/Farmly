@@ -156,29 +156,25 @@ body {
     }
 
     .hero h1 {
-        font-size: 1.5rem;
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+
+    .hero {
+        padding-top: 6rem;
     }
 
     .nav-menu {
         right: 0.5rem;
         width: 80%;
     }
-}
 
-@media (min-width: 768px) {
-    .menu-btn {
-        display: none;
+    .header {
+        padding: 0.5rem 1rem;
     }
 
-    .nav-menu {
-        display: flex !important;
-        position: static;
-        flex-direction: row;
-        gap: 1rem;
-        background: none;
-        box-shadow: none;
-        border: none;
-        padding: 0;
+    .logo {
+        height: 80px;
     }
 }
 
