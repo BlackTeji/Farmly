@@ -1,4 +1,4 @@
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzmvcp-APoPFQCbaJcqoaURh-ZP2tY67GfvQuq1JAN3Zm-9Kib1UAtWxkP0vSnmsdmx/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbx74ipotLcE69Y5ej0I1BTbVkGxJEVbGHcNYKWS8wpoj-WSrRzKWjeYScoFUg_a_eYTqg/exec";
 
 let products = [];
 const cart = {};
