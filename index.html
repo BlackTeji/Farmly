@@ -1,0 +1,58 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farmly - Fresh Farm Food</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <img src="logo.png" alt="Farmly Logo" class="logo" />
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <nav class="nav-menu" id="nav-menu">
+            <a href="#" onclick="closeMenu()">Home</a>
+            <a href="#" onclick="closeMenu()">Shop</a>
+            <a href="#" onclick="closeMenu()">About</a>
+            <a href="#" onclick="closeMenu()">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Fresh farm food<br>for your family</h1>
+        <button class="start-order mt-2">Start Your Order</button>
+    </section>
+
+    <main class="main">
+        <div class="product-grid" id="product-list">
+            <!-- Injected by JS -->
+        </div>
+
+        <div class="cart">
+            <h2>Cart</h2>
+            <div id="cart-items"></div>
+            <div class="total">
+                <div>Total: ₦<span id="cart-total">0</span></div>
+            </div>
+
+            <div class="customer-info">
+                <h3>Customer Info</h3>
+                <input type="text" id="cust-name" placeholder="Your Name" required />
+                <input type="tel" id="cust-phone" placeholder="Phone Number" required />
+                <input type="text" id="cust-location" placeholder="Delivery Location" required />
+                <input type="date" id="cust-date" required />
+            </div>
+
+
+            <button class="checkout-btn" onclick="checkout()">Checkout</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
