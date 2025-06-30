@@ -1,4 +1,4 @@
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbxhnY17hDzUxG8DGaSjy7-oO1UCSmNSFpi1isj6Na96X90Uyb091jIAaTFCSgdJTpfvvA/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbz3E2qvRUgAckylb5S5c5_h6rKDa2fV5kKrB-DF87kUlJOF1jAfIdvDFn3v2nIhdO8V/exec";
 
 let products = [];
 const cart = {};
@@ -132,10 +132,6 @@ async function checkout() {
       })
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
     const result = await response.json();
 
     if (result.success) {
@@ -145,7 +141,7 @@ async function checkout() {
       renderCart();
     } else {
       alert("Submission failed: " + result.error);
-      console.error("Server Error:", result.error);
+      console.error(result);
     }
   } catch (error) {
     alert("Network error. Please try again.");
@@ -153,7 +149,5 @@ async function checkout() {
   }
 }
 
-
-
-
 fetchProducts();
+
