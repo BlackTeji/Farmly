@@ -139,6 +139,13 @@ async function checkout() {
       Object.keys(cart).forEach(id => cart[id] = 0);
       renderProducts();
       renderCart();
+
+      document.getElementById("cust-name").value = "";
+      document.getElementById("cust-phone").value = "";
+      document.getElementById("cust-location").value = "";
+      document.getElementById("cust-delivery").value = "";
+
+
     } else {
       alert("❌ Submission failed.");
       console.error("Server result:", result);
