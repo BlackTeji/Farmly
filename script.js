@@ -16,6 +16,11 @@ async function fetchProducts() {
       available: String(p.Available).toLowerCase() === "true",
       image: `img/${p.ID}.jpg`
     }));
+
+    document.querySelector(".start-order").addEventListener("click", () => {
+      document.getElementById("checkout-section").scrollIntoView({ behavior: "smooth" });
+    });
+
     products.forEach(p => cart[p.id] = 0);
     renderProducts();
   } catch (err) {
@@ -130,7 +135,7 @@ async function checkout() {
     console.log("Result:", result);
 
     if (result.created > 0) {
-      alert("✅ Order submitted successfully!");
+      showModal();
       Object.keys(cart).forEach(id => cart[id] = 0);
       renderProducts();
       renderCart();
@@ -143,5 +148,14 @@ async function checkout() {
     console.error("Fetch error:", e);
   }
 }
+
+function showModal() {
+  document.getElementById("success-modal").classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("success-modal").classList.add("hidden");
+}
+
 
 fetchProducts();

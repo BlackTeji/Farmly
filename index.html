@@ -31,7 +31,7 @@
             <!-- Products will load here -->
         </div>
 
-        <div class="checkout-container">
+        <div class="checkout-container" id="checkout-section">
             <!-- Cart Summary -->
             <div class="checkout-card cart-summary">
                 <h2><span>🛒</span> Your Cart</h2>
@@ -58,6 +58,15 @@
     </main>
 
     <script src="script.js"></script>
+
+    <div id="success-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Order Placed!</h2>
+            <p>Thank you for ordering with Farmly. We'll contact you shortly.</p>
+            <button onclick="closeModal()" class="modal-close-btn">Close</button>
+        </div>
+    </div>
+
 </body>
 
 </html>
