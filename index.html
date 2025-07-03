@@ -43,8 +43,14 @@
                 <input type="text" id="cust-name" placeholder="Your Name" required />
                 <input type="tel" id="cust-phone" placeholder="Phone Number" required />
                 <input type="text" id="cust-location" placeholder="Delivery Location" required />
-                <input type="date" id="cust-date" required />
+
+                <select id="cust-delivery" required>
+                    <option value="">Select Delivery Option</option>
+                    <option value="Standard (3 weeks)">Standard Delivery (3 weeks)</option>
+                    <option value="Express (1 week)">Express Delivery (1 week)</option>
+                </select>
             </div>
+
 
 
             <button class="checkout-btn" onclick="checkout()">Checkout</button>
