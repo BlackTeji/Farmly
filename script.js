@@ -88,15 +88,20 @@ document.addEventListener("click", e => {
   if (!menu.contains(e.target) && !btn.contains(e.target)) closeMenu();
 });
 
-async function checkout() {
-  if (Object.values(cart).every(q => q === 0)) {
-    return alert("Your cart is empty.");
-  }
+function showModal() {
+  document.getElementById("success-modal").classList.remove("hidden");
+}
 
+function closeModal() {
+  document.getElementById("success-modal").classList.add("hidden");
+}
+
+function payWithPaystack() {
   const name = document.getElementById("cust-name").value.trim();
   const phone = document.getElementById("cust-phone").value.trim();
   const location = document.getElementById("cust-location").value.trim();
   const delivery = document.getElementById("cust-delivery").value;
+  const email = document.getElementById("cust-email").value.trim() || "customer@example.com";
 
   if (!name || !phone || !location || !delivery) {
     return alert("Please fill in all customer details.");
@@ -112,57 +117,72 @@ async function checkout() {
       return `${prod.name} x${cart[id]} (₦${subtotal})`;
     });
 
+  if (totalAmount === 0) {
+    return alert("Your cart is empty.");
+  }
+
   const summary = items.join("; ");
 
-  try {
-    const res = await fetch(ORDERS_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        data: [{
-          Name: name,
-          Phone: phone,
-          Location: location,
-          Delivery: delivery,
-          Order: summary,
-          Total: totalAmount
-        }]
+  const handler = PaystackPop.setup({
+    key: "pk_test_93fb0a0817cffc7772f7084f3c388fda026c98f9",
+    email: email,
+    amount: totalAmount * 100,
+    currency: "NGN",
+    ref: "FARM" + Math.floor(Math.random() * 1000000000),
+    metadata: {
+      custom_fields: [
+        { display_name: "Full Name", variable_name: "full_name", value: name },
+        { display_name: "Phone Number", variable_name: "phone", value: phone },
+        { display_name: "Delivery Location", variable_name: "location", value: location },
+        { display_name: "Delivery Type", variable_name: "delivery", value: delivery },
+        { display_name: "Order Summary", variable_name: "order_summary", value: summary }
+      ]
+    },
+    callback: function (response) {
+      fetch(ORDERS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          data: [{
+            Name: name,
+            Phone: phone,
+            Location: location,
+            Delivery: delivery,
+            Order: summary,
+            Total: totalAmount,
+            Reference: response.reference,
+            Email: email
+          }]
+        })
       })
-    });
-
-    console.log("Status:", res.status, [...res.headers]);
-    const result = await res.json();
-    console.log("Result:", result);
-
-    if (result.created > 0) {
-      showModal();
-      Object.keys(cart).forEach(id => cart[id] = 0);
-      renderProducts();
-      renderCart();
-
-      document.getElementById("cust-name").value = "";
-      document.getElementById("cust-phone").value = "";
-      document.getElementById("cust-location").value = "";
-      document.getElementById("cust-delivery").value = "";
-
-
-    } else {
-      alert("❌ Submission failed.");
-      console.error("Server result:", result);
+        .then(res => res.json())
+        .then(result => {
+          if (result.created > 0) {
+            showModal();
+            Object.keys(cart).forEach(id => cart[id] = 0);
+            renderProducts();
+            renderCart();
+            document.getElementById("cust-name").value = "";
+            document.getElementById("cust-phone").value = "";
+            document.getElementById("cust-location").value = "";
+            document.getElementById("cust-delivery").value = "";
+            document.getElementById("cust-email").value = "";
+          } else {
+            alert("❌ Payment succeeded, but order not saved.");
+            console.error(result);
+          }
+        })
+        .catch(error => {
+          alert("⚠️ Payment succeeded, but error saving order.");
+          console.error(error);
+        });
+    },
+    onClose: function () {
+      alert("❌ Payment window closed.");
     }
-  } catch (e) {
-    alert("❌ Network error. Try again.");
-    console.error("Fetch error:", e);
-  }
-}
+  });
 
-function showModal() {
-  document.getElementById("success-modal").classList.remove("hidden");
+  handler.openIframe();
 }
-
-function closeModal() {
-  document.getElementById("success-modal").classList.add("hidden");
-}
-
 
 fetchProducts();

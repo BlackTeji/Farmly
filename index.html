@@ -7,6 +7,7 @@
     <title>Farmly - Fresh Farm Food</title>
     <link rel="stylesheet" href="styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 
 <body>
@@ -47,12 +48,14 @@
                 <input type="text" id="cust-name" placeholder="Full Name" required />
                 <input type="tel" id="cust-phone" placeholder="Phone Number" required />
                 <input type="text" id="cust-location" placeholder="Delivery Address" required />
+                <input type="email" id="cust-email" placeholder="Email Address" required />
                 <select id="cust-delivery" required>
                     <option value="">Choose Delivery Type</option>
                     <option value="Standard (3 weeks)">Standard Delivery – 3 Weeks</option>
                     <option value="Express (1 week)">Express Delivery – 1 Week</option>
                 </select>
-                <button class="checkout-btn" onclick="checkout()">Place Order</button>
+                <button class="checkout-btn" onclick="payWithPaystack()">Pay Now</button>
+
             </div>
         </div>
     </main>
