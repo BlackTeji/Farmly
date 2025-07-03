@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,31 +28,32 @@
 
     <main class="main">
         <div class="product-grid" id="product-list">
+            <!-- Products will load here -->
         </div>
 
-        <div class="cart">
-            <h2>Cart</h2>
-            <div id="cart-items"></div>
-            <div class="total">
-                <div>Total: ₦<span id="cart-total">0</span></div>
+        <div class="checkout-container">
+            <!-- Cart Summary -->
+            <div class="checkout-card cart-summary">
+                <h2><span>🛒</span> Your Cart</h2>
+                <div id="cart-items"></div>
+                <div class="total">
+                    <strong>Total:</strong> ₦<span id="cart-total">0</span>
+                </div>
             </div>
 
-            <div class="customer-info">
-                <h3>Customer Info</h3>
-                <input type="text" id="cust-name" placeholder="Your Name" required />
+            <!-- Customer Info -->
+            <div class="checkout-card customer-form">
+                <h2><span>🚚</span> Delivery Details</h2>
+                <input type="text" id="cust-name" placeholder="Full Name" required />
                 <input type="tel" id="cust-phone" placeholder="Phone Number" required />
-                <input type="text" id="cust-location" placeholder="Delivery Location" required />
-
+                <input type="text" id="cust-location" placeholder="Delivery Address" required />
                 <select id="cust-delivery" required>
-                    <option value="">Select Delivery Option</option>
-                    <option value="Standard (3 weeks)">Standard Delivery (3 weeks)</option>
-                    <option value="Express (1 week)">Express Delivery (1 week)</option>
+                    <option value="">Choose Delivery Type</option>
+                    <option value="Standard (3 weeks)">Standard Delivery – 3 Weeks</option>
+                    <option value="Express (1 week)">Express Delivery – 1 Week</option>
                 </select>
+                <button class="checkout-btn" onclick="checkout()">Place Order</button>
             </div>
-
-
-
-            <button class="checkout-btn" onclick="checkout()">Checkout</button>
         </div>
     </main>
 
