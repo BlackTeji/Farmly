@@ -125,7 +125,7 @@ async function checkout() {
           Location: location,
           Delivery: delivery,
           Order: summary,
-          Total: totalAmount  // ✅ added here
+          Total: totalAmount
         }]
       })
     });
