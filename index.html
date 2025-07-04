@@ -36,11 +36,24 @@
             <!-- Cart Summary -->
             <div class="checkout-card cart-summary">
                 <h2><span>🛒</span> Your Cart</h2>
-                <div id="cart-items"></div>
-                <div class="total">
-                    <strong>Total:</strong> ₦<span id="cart-total">0</span>
+                <div id="cart-items" class="cart-item-list"></div>
+                <hr />
+                <div class="cart-summary-values">
+                    <div class="cart-row">
+                        <span>Subtotal:</span>
+                        <span id="cart-subtotal">₦0</span>
+                    </div>
+                    <div class="cart-row">
+                        <span>Delivery Fee:</span>
+                        <span id="cart-delivery-fee">₦0</span>
+                    </div>
+                    <div class="cart-row total-row">
+                        <strong>Total:</strong>
+                        <strong id="cart-total">₦0</strong>
+                    </div>
                 </div>
             </div>
+
 
             <!-- Customer Info -->
             <div class="checkout-card customer-form">
@@ -51,8 +64,8 @@
                 <input type="email" id="cust-email" placeholder="Email Address" required />
                 <select id="cust-delivery" required>
                     <option value="">Choose Delivery Type</option>
-                    <option value="Standard (3 weeks)">Standard Delivery – 3 Weeks</option>
-                    <option value="Express (1 week)">Express Delivery – 1 Week</option>
+                    <option value="Standard (1 week)">Standard Delivery – 1 Week</option>
+                    <option value="Express (3 Days)">Express Delivery – 3 Days</option>
                 </select>
                 <button class="checkout-btn" onclick="payWithPaystack()">Pay Now</button>
 

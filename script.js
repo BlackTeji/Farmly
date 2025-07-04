@@ -58,23 +58,42 @@ function updateCart(id, delta) {
 
 function renderCart() {
   const cartContainer = document.getElementById("cart-items");
+  const subtotalDisplay = document.getElementById("cart-subtotal");
+  const deliveryFeeDisplay = document.getElementById("cart-delivery-fee");
   const totalDisplay = document.getElementById("cart-total");
+
   cartContainer.innerHTML = "";
-  let total = 0;
+  let subtotal = 0;
+
   for (const id in cart) {
     const qty = cart[id];
     if (qty > 0) {
       const prod = products.find(p => p.id === id);
-      total += qty * prod.price;
+      const itemTotal = qty * prod.price;
+      subtotal += itemTotal;
       cartContainer.innerHTML += `
         <div class="cart-item">
           <span>${prod.name} x${qty}</span>
-          <span>₦${qty * prod.price}</span>
+          <span>₦${itemTotal.toLocaleString()}</span>
         </div>`;
     }
   }
-  totalDisplay.innerText = total;
+
+  // Get delivery fee
+  const deliveryType = document.getElementById("cust-delivery").value;
+  let deliveryFee = 0;
+  if (deliveryType.toLowerCase().includes("standard")) {
+    deliveryFee = 5000;
+  } else if (deliveryType.toLowerCase().includes("express")) {
+    deliveryFee = 8000;
+  }
+
+  // Update DOM
+  subtotalDisplay.innerText = `₦${subtotal.toLocaleString()}`;
+  deliveryFeeDisplay.innerText = `₦${deliveryFee.toLocaleString()}`;
+  totalDisplay.innerText = (subtotal + deliveryFee).toLocaleString();
 }
+
 
 function toggleMenu() {
   document.getElementById("nav-menu").classList.toggle("show");
@@ -186,3 +205,5 @@ function payWithPaystack() {
 }
 
 fetchProducts();
+document.getElementById("cust-delivery").addEventListener("change", renderCart);
+
