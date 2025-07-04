@@ -23,7 +23,7 @@ body {
     align-items: center;
     padding: 1rem 2rem;
     z-index: 1000;
-    border-bottom: 1px solid #ddd;
+    border-bottom: none;
 }
 
 .logo {
@@ -299,6 +299,18 @@ body {
     .main {
         grid-template-columns: 1fr;
     }
+
+    .header {
+        padding: 0.5rem 1rem;
+        gap: 1rem;
+        /* Adds space between logo and menu on mobile */
+    }
+
+    .logo {
+        height: 80px;
+        /* Smaller logo on mobile */
+    }
+
 
     .product-grid {
         grid-template-columns: repeat(2, 1fr);
