@@ -12,7 +12,6 @@ body {
     color: #2a4d3c;
     overflow-x: hidden;
     padding-bottom: 70px;
-    /* space for mobile nav */
 }
 
 /* Header */
@@ -51,6 +50,13 @@ body {
     color: #ca5c2c;
 }
 
+.menu-toggle {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #2a4d3c;
+}
+
 /* Hero Section */
 .hero {
     background: linear-gradient(-45deg, #33a353, #fdfaf4, #fdfaf4, #fdca63);
@@ -66,7 +72,6 @@ body {
     position: relative;
 }
 
-/* Hero Text Animation */
 .fade-in-up {
     opacity: 0;
     transform: translateY(40px);
@@ -88,7 +93,6 @@ body {
     color: #2a4d3c;
 }
 
-/* Button */
 .start-order {
     text-decoration: none;
     background-color: #ca5c2c;
@@ -106,7 +110,6 @@ body {
     background-color: #b14e23;
 }
 
-/* Curve Animation */
 .curve {
     position: absolute;
     bottom: 0;
@@ -133,7 +136,6 @@ body {
     }
 }
 
-/* Intro Section */
 .intro {
     padding: 4rem 1rem 5rem;
     max-width: 700px;
@@ -144,7 +146,6 @@ body {
     color: #3a3a3a;
 }
 
-/* Footer */
 .footer {
     background-color: #2a4d3c;
     color: white;
@@ -153,7 +154,6 @@ body {
     font-size: 0.95rem;
 }
 
-/* Did You Know + Insight */
 .did-you-know-section {
     margin-top: 4rem;
     display: flex;
@@ -163,6 +163,9 @@ body {
     background-color: #fdfaf4;
     min-height: 300px;
     text-align: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 0;
 }
 
 .fact-carousel,
@@ -189,7 +192,6 @@ body {
     min-height: 80px;
 }
 
-/* Background Animation */
 @keyframes gradientMove {
     0% {
         background-position: 0% 50%;
@@ -204,36 +206,24 @@ body {
     }
 }
 
-/* Mobile Bottom Navigation */
-.mobile-nav {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #fdfaf4;
-    border-top: 1px solid #ccc;
-    padding: 0.6rem 0;
-    z-index: 999;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.mobile-nav a {
-    font-size: 1.4rem;
-    color: #2a4d3c;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
     .nav-menu {
         display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        right: 1.5rem;
+        background: #fdfaf4;
+        padding: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .mobile-nav {
+    .nav-menu.show {
         display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
     }
 
     .logo {
@@ -266,10 +256,5 @@ body {
     .fact-carousel,
     .brand-carousel {
         width: 100%;
-    }
-
-    .testimonial-card {
-        font-size: 1rem;
-        padding: 1.5rem;
     }
 }
