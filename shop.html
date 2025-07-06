@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farmly - Fresh Farm Food</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+
+<body>
+    <header class="header">
+        <img src="logo.png" alt="Farmly Logo" class="logo" />
+        <nav class="nav-menu show" id="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="shop.html">Shop</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+    </header>
+
+    <section class="hero">
+        <h1>Curate your Order</h1>
+    </section>
+
+    <main class="main">
+        <div class="product-grid" id="product-list">
+            <!-- Products will load here -->
+        </div>
+
+        <div class="checkout-container" id="checkout-section">
+            <!-- Cart Summary -->
+            <div class="checkout-card cart-summary">
+                <h2><span>🛒</span> Your Cart</h2>
+                <div id="cart-items" class="cart-item-list"></div>
+                <hr />
+                <div class="cart-summary-values">
+                    <div class="cart-row">
+                        <span>Subtotal:</span>
+                        <span id="cart-subtotal">₦0</span>
+                    </div>
+                    <div class="cart-row">
+                        <span>Delivery Fee:</span>
+                        <span id="cart-delivery-fee">₦0</span>
+                    </div>
+                    <div class="cart-row total-row">
+                        <strong>Total:</strong>
+                        <strong id="cart-total">₦0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Info -->
+            <div class="checkout-card customer-form">
+                <h2><span>🚚</span> Delivery Details</h2>
+                <input type="text" id="cust-name" placeholder="Full Name" required />
+                <input type="tel" id="cust-phone" placeholder="Phone Number" required />
+                <input type="text" id="cust-location" placeholder="Delivery Address" required />
+                <input type="email" id="cust-email" placeholder="Email Address" required />
+                <select id="cust-delivery" required>
+                    <option value="">Choose Delivery Type</option>
+                    <option value="Standard (1 week)">Standard Delivery – 1 Week</option>
+                    <option value="Express (3 Days)">Express Delivery – 3 Days</option>
+                </select>
+                <button class="checkout-btn" onclick="payWithPaystack()">Pay Now</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+
+    <div id="success-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Order Placed!</h2>
+            <p>Thank you for ordering with Farmly. We'll contact you shortly.</p>
+            <button onclick="closeModal()" class="modal-close-btn">Close</button>
+        </div>
+    </div>
+</body>
+
+</html>

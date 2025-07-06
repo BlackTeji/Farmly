@@ -1,5 +1,5 @@
-const PRODUCTS_URL = "https://sheetdb.io/api/v1/g1olh3sapi0fv?sheet=Products";
-const ORDERS_URL = "https://sheetdb.io/api/v1/g1olh3sapi0fv?sheet=Orders";
+const PRODUCTS_URL = "https://sheetdb.io/api/v1/n3htzcmigb7ez?sheet=Products";
+const ORDERS_URL = "https://sheetdb.io/api/v1/n3htzcmigb7ez?sheet=Orders";
 
 let products = [];
 const cart = {};
@@ -8,6 +8,10 @@ async function fetchProducts() {
   try {
     const res = await fetch(PRODUCTS_URL);
     const data = await res.json();
+
+    // Ensure data is an array
+    if (!Array.isArray(data)) throw new Error("Invalid data format");
+
     products = data.map(p => ({
       id: p.ID,
       name: p.Product,
@@ -17,14 +21,11 @@ async function fetchProducts() {
       image: `img/${p.ID}.jpg`
     }));
 
-    document.querySelector(".start-order").addEventListener("click", () => {
-      document.getElementById("checkout-section").scrollIntoView({ behavior: "smooth" });
-    });
-
     products.forEach(p => cart[p.id] = 0);
     renderProducts();
   } catch (err) {
     console.error("Error fetching products:", err);
+    document.getElementById("product-list").innerHTML = "<p>⚠️ Unable to load products.</p>";
   }
 }
 
@@ -79,8 +80,7 @@ function renderCart() {
     }
   }
 
-  // Get delivery fee
-  const deliveryType = document.getElementById("cust-delivery").value;
+  const deliveryType = document.getElementById("cust-delivery")?.value || "";
   let deliveryFee = 0;
   if (deliveryType.toLowerCase().includes("standard")) {
     deliveryFee = 5000;
@@ -88,24 +88,10 @@ function renderCart() {
     deliveryFee = 8000;
   }
 
-  // Update DOM
   subtotalDisplay.innerText = `₦${subtotal.toLocaleString()}`;
   deliveryFeeDisplay.innerText = `₦${deliveryFee.toLocaleString()}`;
-  totalDisplay.innerText = (subtotal + deliveryFee).toLocaleString();
+  totalDisplay.innerText = `₦${(subtotal + deliveryFee).toLocaleString()}`;
 }
-
-
-function toggleMenu() {
-  document.getElementById("nav-menu").classList.toggle("show");
-}
-function closeMenu() {
-  document.getElementById("nav-menu").classList.remove("show");
-}
-document.addEventListener("click", e => {
-  const menu = document.getElementById("nav-menu");
-  const btn = document.querySelector(".menu-btn");
-  if (!menu.contains(e.target) && !btn.contains(e.target)) closeMenu();
-});
 
 function showModal() {
   document.getElementById("success-modal").classList.remove("hidden");
@@ -140,12 +126,20 @@ function payWithPaystack() {
     return alert("Your cart is empty.");
   }
 
+  let deliveryFee = 0;
+  if (delivery.toLowerCase().includes("standard")) {
+    deliveryFee = 5000;
+  } else if (delivery.toLowerCase().includes("express")) {
+    deliveryFee = 8000;
+  }
+
+  const totalPayable = totalAmount + deliveryFee;
   const summary = items.join("; ");
 
   const handler = PaystackPop.setup({
     key: "pk_test_93fb0a0817cffc7772f7084f3c388fda026c98f9",
     email: email,
-    amount: totalAmount * 100,
+    amount: totalPayable * 100,
     currency: "NGN",
     ref: "FARM" + Math.floor(Math.random() * 1000000000),
     metadata: {
@@ -204,6 +198,34 @@ function payWithPaystack() {
   handler.openIframe();
 }
 
-fetchProducts();
-document.getElementById("cust-delivery").addEventListener("change", renderCart);
+// Navigation Menu
+function toggleMenu() {
+  document.getElementById("nav-menu").classList.toggle("show");
+}
 
+function closeMenu() {
+  document.getElementById("nav-menu").classList.remove("show");
+}
+
+document.addEventListener("click", e => {
+  const menu = document.getElementById("nav-menu");
+  const btn = document.querySelector(".menu-btn");
+  if (!menu.contains(e.target) && !btn.contains(e.target)) closeMenu();
+});
+
+// Initialize when page is ready
+document.addEventListener("DOMContentLoaded", () => {
+  fetchProducts();
+
+  const deliverySelect = document.getElementById("cust-delivery");
+  if (deliverySelect) {
+    deliverySelect.addEventListener("change", renderCart);
+  }
+
+  const startOrderBtn = document.querySelector(".start-order");
+  if (startOrderBtn && document.getElementById("checkout-section")) {
+    startOrderBtn.addEventListener("click", () => {
+      document.getElementById("checkout-section").scrollIntoView({ behavior: "smooth" });
+    });
+  }
+});
