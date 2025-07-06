@@ -22,13 +22,12 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: transparent;
+    background-color: #fdfaf4;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
     z-index: 1000;
-    border-bottom: 1px solid #ddd;
 }
 
 .logo {
@@ -382,6 +381,10 @@ body {
         display: block;
     }
 
+    .logo {
+        height: 60px;
+    }
+
     .nav-menu {
         display: none;
         flex-direction: column;
@@ -402,4 +405,6 @@ body {
         flex: 1 1 100%;
         max-width: 100%;
     }
+
+
 }

@@ -19,12 +19,16 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    background: transparent;
+    background-color: #fdfaf4;
+    /* Same as body */
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
     z-index: 1000;
+    border: none;
+    /* No bottom line */
+    box-shadow: none;
 }
 
 .logo {
@@ -146,6 +150,7 @@ body {
     color: #3a3a3a;
 }
 
+/* Footer */
 .footer {
     background-color: #2a4d3c;
     color: white;
@@ -154,6 +159,7 @@ body {
     font-size: 0.95rem;
 }
 
+/* Did You Know + Insight */
 .did-you-know-section {
     margin-top: 4rem;
     display: flex;
@@ -192,6 +198,7 @@ body {
     min-height: 80px;
 }
 
+/* Animation */
 @keyframes gradientMove {
     0% {
         background-position: 0% 50%;
@@ -206,6 +213,7 @@ body {
     }
 }
 
+/* Responsive */
 @media (max-width: 768px) {
     .nav-menu {
         display: none;
