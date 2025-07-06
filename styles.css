@@ -27,6 +27,7 @@ body {
     align-items: center;
     padding: 1rem 2rem;
     z-index: 1000;
+    border-bottom: 1px solid #ddd;
 }
 
 .logo {
@@ -51,6 +52,28 @@ body {
 
 .nav-menu a:hover {
     color: #ca5c2c;
+}
+
+/* Mobile Bottom Navigation */
+.mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fdfaf4;
+    border-top: 1px solid #ccc;
+    padding: 0.6rem 0;
+    z-index: 999;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.mobile-nav a {
+    font-size: 1.4rem;
+    color: #2a4d3c;
+    text-decoration: none;
+    font-weight: 500;
 }
 
 /* Hero Section */
@@ -157,7 +180,6 @@ body {
     border-radius: 14px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
     flex: 1 1 420px;
-    font-family: 'Inter', sans-serif;
     transition: transform 0.15s ease;
 }
 
@@ -273,10 +295,17 @@ body {
     background: #1e3a2b;
 }
 
-/* Mobile Styles */
+/* Responsive Fixes */
 @media (max-width: 768px) {
     .main {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .checkout-container {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: stretch;
     }
 
     .product-grid {
@@ -313,24 +342,25 @@ body {
         padding: 0 1rem;
     }
 
-    .start-order {
-        font-size: 0.95rem;
-        padding: 0.5rem 1rem;
+    body {
+        padding-bottom: 60px;
     }
 
-    .checkout-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
+    .nav-menu {
+        display: none;
+    }
+
+    .mobile-nav {
+        display: flex;
     }
 
     .checkout-card {
-        flex: 1 1 calc(50% - 1rem);
+        flex: 1 1 100%;
         max-width: 100%;
     }
 }
 
+/* Modal */
 .modal {
     position: fixed;
     top: 0;
