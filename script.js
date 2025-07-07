@@ -6,6 +6,9 @@ const cart = {};
 
 async function fetchProducts() {
   try {
+    const container = document.getElementById("product-list");
+    container.innerHTML = "<p>⏳ Loading products...</p>";
+
     const res = await fetch(PRODUCTS_URL);
     const data = await res.json();
 
@@ -171,8 +174,10 @@ function payWithPaystack() {
         .then(result => {
           if (result.created > 0) {
             showModal();
-            Object.keys(cart).forEach(id => cart[id] = 0);
-            renderProducts();
+            Object.keys(cart).forEach(id => {
+              cart[id] = 0;
+              document.getElementById(`qty-${id}`).innerText = "0";
+            });
             renderCart();
             document.getElementById("cust-name").value = "";
             document.getElementById("cust-phone").value = "";
@@ -197,20 +202,6 @@ function payWithPaystack() {
   handler.openIframe();
 }
 
-function toggleMenu() {
-  document.getElementById("nav-menu").classList.toggle("show");
-}
-
-function closeMenu() {
-  document.getElementById("nav-menu").classList.remove("show");
-}
-
-document.addEventListener("click", e => {
-  const menu = document.getElementById("nav-menu");
-  const btn = document.querySelector(".menu-btn");
-  if (!menu.contains(e.target) && !btn?.contains(e.target)) closeMenu();
-});
-
 document.addEventListener("DOMContentLoaded", () => {
   fetchProducts();
 
@@ -224,6 +215,17 @@ document.addEventListener("DOMContentLoaded", () => {
     startOrderBtn.addEventListener("click", () => {
       document.getElementById("checkout-section").scrollIntoView({ behavior: "smooth" });
     });
+
+    document.getElementById("menu-toggle").addEventListener("click", () => {
+      document.getElementById("nav-menu").classList.toggle("show");
+    });
+
+    document.addEventListener("click", e => {
+      const menu = document.getElementById("nav-menu");
+      const btn = document.getElementById("menu-toggle");
+      if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.remove("show");
+      }
+    });
   }
 });
-

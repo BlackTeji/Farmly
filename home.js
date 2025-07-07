@@ -1,4 +1,3 @@
-// FACT ROTATOR
 const agriNutriFacts = [
     "Yam is Nigeria’s most cultivated tuber crop.",
     "Cassava is a great source of carbohydrates.",
@@ -23,24 +22,23 @@ function rotateFacts() {
     index++;
 }
 
-// NAV TOGGLE
-document.addEventListener('DOMContentLoaded', () => {
-    // Menu toggle
-    const menuToggle = document.getElementById('menu-toggle');
-    const navMenu = document.getElementById('nav-menu');
+document.addEventListener("DOMContentLoaded", () => {
+    const menuToggle = document.getElementById("menu-toggle");
+    const navMenu = document.getElementById("nav-menu");
 
-    menuToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('show');
+    // Toggle navigation visibility
+    menuToggle.addEventListener("click", () => {
+        navMenu.classList.toggle("show");
     });
 
-    // Auto-close on link click (optional)
-    navMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            navMenu.classList.remove('show');
-        });
+    // Close nav when clicking outside (mobile)
+    document.addEventListener("click", (e) => {
+        if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+            navMenu.classList.remove("show");
+        }
     });
 
-    // Start rotating facts once DOM is ready
+    // Rotate facts
     rotateFacts();
     setInterval(rotateFacts, 8000);
 });

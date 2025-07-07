@@ -102,6 +102,15 @@
                     navMenu.classList.toggle("show");
                 });
 
+                document.addEventListener("click", (event) => {
+                    if (
+                        !navMenu.contains(event.target) &&
+                        !menuToggle.contains(event.target)
+                    ) {
+                        navMenu.classList.remove("show");
+                    }
+                });
+
                 navMenu.querySelectorAll("a").forEach(link => {
                     link.addEventListener("click", () => {
                         navMenu.classList.remove("show");
