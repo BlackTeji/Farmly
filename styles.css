@@ -4,29 +4,48 @@ html {
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    background-color: #fdfaf4;
+    background: linear-gradient(-45deg, #fdfaf4, #f2e7d5, #e6dccb, #fdfaf4);
+    background-size: 400% 400%;
+    animation: gradientFlow 20s ease infinite;
     color: #2a4d3c;
     font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
     padding-top: 100px;
     padding-bottom: 80px;
+    overflow-x: hidden;
+}
+
+/* Gradient animation */
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* Header */
 .header {
     position: fixed;
     top: 0;
-    left: 0;
     width: 100%;
-    background-color: #fdfaf4;
+    background: linear-gradient(-45deg, #fdfaf4, #f2e7d5, #e6dccb, #fdfaf4);
+    background-size: 400% 400%;
+    animation: gradientFlow 20s ease infinite;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem 1.5rem;
     z-index: 1000;
 }
 
@@ -38,7 +57,7 @@ body {
 /* Navigation */
 .nav-menu {
     display: flex;
-    gap: 2rem;
+    gap: 2.5rem;
     align-items: center;
     font-size: 1.2rem;
 }
@@ -71,8 +90,9 @@ body {
 }
 
 .hero h1 {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: 4rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    margin-top: 4rem;
     margin-bottom: 1rem;
 }
 
@@ -89,16 +109,16 @@ body {
 }
 
 .product-grid {
-    flex: 1 1 60%;
+    flex: 1 1 50%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1rem;
+    gap: 3rem;
 }
 
 /* Product Card */
 .product-card {
     background: white;
-    border-radius: 12px;
+    border-radius: 15px;
     padding: 1.2rem 1rem 1.5rem;
     text-align: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -134,7 +154,7 @@ body {
     color: white;
     border: none;
     border-radius: 5px;
-    margin: 0 1px;
+    margin: 1 1px;
     cursor: pointer;
     transition: background 0.3s;
 }
@@ -149,7 +169,6 @@ body {
     justify-content: center;
     align-items: center;
     gap: 0.6rem;
-
 }
 
 .product-card .unavailable,
@@ -222,8 +241,8 @@ body {
     text-align: right;
     font-weight: 600;
     font-size: 17px;
-    color: #2a4d3c;
-    border-top: 1px solid #eee;
+    color: #4d352a;
+    border-top: 1px solid #110f0f;
     padding-top: 10px;
 }
 
@@ -242,8 +261,8 @@ body {
 }
 
 .cart-summary-values .total-row {
-    font-size: 17px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 400;
     margin-top: 8px;
     border-top: 1px solid #ccc;
     padding-top: 8px;
@@ -347,7 +366,7 @@ body {
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        padding: 1rem;
+        padding: 2rem;
     }
 
     .checkout-container {
@@ -364,6 +383,14 @@ body {
 
     .product-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .product-card img {
+        height: 90px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 8px;
     }
 
     .product-card h3,
@@ -388,20 +415,30 @@ body {
     }
 
     .cart-summary .cart-item {
-        font-size: 0.85rem;
+        font-size: 0.96rem;
+    }
+
+    .cart-summary-values .cart-row {
+        font-size: 0.95rem;
+        font-weight: 400;
+        margin: 4px 0;
+    }
+
+    .cart-summary-values .total-row {
+        font-size: 13px;
+        font-weight: 300;
+        margin-top: 8px;
+        border-top: 1px solid #ccc;
+        padding-top: 8px;
     }
 
     .hero h1 {
-        font-size: 1.8rem;
+        font-size: 2rem;
         padding: 0 1rem;
     }
 
     body {
         padding-bottom: 60px;
-    }
-
-    .menu-toggle {
-        display: block;
     }
 
     .logo {
@@ -413,14 +450,24 @@ body {
         flex-direction: column;
         position: absolute;
         top: 80px;
-        right: 1.5rem;
+        right: 1rem;
         background-color: #fdfaf4;
-        padding: 1rem;
+        padding: 0.5rem;
+        gap: 0.8rem;
+        font-size: 10px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         z-index: 1001;
     }
 
     .nav-menu.show {
         display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
+        font-size: 1.5rem;
+        cursor: pointer;
+        margin-left: auto;
+        color: #2a4d3c;
     }
 }
