@@ -414,6 +414,13 @@ body {
         padding: 12px;
     }
 
+    .cart-summary {
+        max-height: 500px;
+        min-height: 350px;
+        padding-right: 20px;
+        margin-top: 0;
+    }
+
     .cart-summary .cart-item {
         font-size: 0.96rem;
     }
@@ -432,9 +439,13 @@ body {
         padding-top: 8px;
     }
 
+    .hero {
+        padding: 0.5rem 0.5rem 0.5rem;
+    }
+
     .hero h1 {
         font-size: 2rem;
-        padding: 0 1rem;
+        margin-top: 20px;
     }
 
     body {

@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         navMenu.classList.toggle("show");
     });
 
-    // Close nav when clicking outside (mobile)
+    // Close nav when clicking outside
     document.addEventListener("click", (e) => {
         if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
             navMenu.classList.remove("show");
@@ -41,4 +41,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Rotate facts
     rotateFacts();
     setInterval(rotateFacts, 8000);
+
+    // Prevent anchor links from jumping to top
+    document.querySelectorAll('a[href="#"]').forEach(link => {
+        link.addEventListener('click', e => e.preventDefault());
+    });
 });
+
