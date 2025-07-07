@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Farmly - Shop</title>
+    <meta name="description" content="Curate and order fresh farm produce from Delta to Lagos with Farmly." />
+    <title>Farmly Shop – Curate Your Fresh Farm Order</title>
     <link rel="stylesheet" href="styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
     <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -33,7 +34,7 @@
     </section>
 
     <!-- Main Layout -->
-    <main class="main">
+    <main class="main" role="main">
         <div class="product-grid" id="product-list">
             <!-- Products will load here -->
         </div>
@@ -63,10 +64,11 @@
             <!-- Customer Info -->
             <div class="checkout-card customer-form">
                 <h2><span>🚚</span> Delivery Details</h2>
-                <input type="text" id="cust-name" placeholder="Full Name" required />
-                <input type="tel" id="cust-phone" placeholder="Phone Number" required />
-                <input type="text" id="cust-location" placeholder="Delivery Address" required />
-                <input type="email" id="cust-email" placeholder="Email Address" required />
+                <input type="text" id="cust-name" placeholder="Full Name" required autocomplete="name" />
+                <input type="tel" id="cust-phone" placeholder="Phone Number" required autocomplete="tel" />
+                <input type="text" id="cust-location" placeholder="Delivery Address" required
+                    autocomplete="street-address" />
+                <input type="email" id="cust-email" placeholder="Email Address" required autocomplete="email" />
                 <select id="cust-delivery" required>
                     <option value="">Choose Delivery Type</option>
                     <option value="Standard (1 week)">Standard Delivery – 1 Week</option>
@@ -78,31 +80,34 @@
     </main>
 
     <!-- Success Modal -->
-    <div id="success-modal" class="modal hidden">
+    <div id="success-modal" class="modal hidden" role="dialog" aria-labelledby="success-title" aria-modal="true">
         <div class="modal-content">
-            <h2>Order Placed!</h2>
+            <h2 id="success-title">Order Placed!</h2>
             <p>Thank you for ordering with Farmly. We'll contact you shortly.</p>
             <button onclick="closeModal()" class="modal-close-btn">Close</button>
         </div>
     </div>
 
+    <!-- Load Core Script -->
     <script src="script.js"></script>
 
-    <!-- Mobile Nav Toggle Script -->
+    <!-- Mobile Navigation Toggle -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const menuToggle = document.getElementById("menu-toggle");
             const navMenu = document.getElementById("nav-menu");
 
-            menuToggle.addEventListener("click", () => {
-                navMenu.classList.toggle("show");
-            });
-
-            navMenu.querySelectorAll("a").forEach(link => {
-                link.addEventListener("click", () => {
-                    navMenu.classList.remove("show");
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener("click", () => {
+                    navMenu.classList.toggle("show");
                 });
-            });
+
+                navMenu.querySelectorAll("a").forEach(link => {
+                    link.addEventListener("click", () => {
+                        navMenu.classList.remove("show");
+                    });
+                });
+            }
         });
     </script>
 </body>

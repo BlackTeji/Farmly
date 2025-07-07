@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <!-- Header with toggle -->
+    <!-- Header -->
     <header class="header">
         <img src="logo.png" alt="Farmly Logo" class="logo" />
         <span class="menu-toggle" id="menu-toggle">&#9776;</span>
@@ -28,6 +28,7 @@
         <h1 class="fade-in-up">Fresh farm food<br>for your family</h1>
         <a href="shop.html" class="start-order fade-in-up">Start Your Order</a>
 
+        <!-- Did You Know & Insight Section -->
         <section class="did-you-know-section">
             <div class="fact-carousel">
                 <h2>Did You Know?</h2>
@@ -53,10 +54,9 @@
     <section class="intro">
         <p>
             At Farmly, we believe in reconnecting families with the richness of Nigeria's farmland. We grow our food in
-            Delta
-            State, freshly harvest and deliver to Lagos — every package filled with freshness, nutrition, and the taste
-            of
-            home.
+            Delta State, freshly harvest and deliver to Lagos — every package filled with freshness, nutrition, and the
+            taste
+            of home.
         </p>
     </section>
 
@@ -64,6 +64,14 @@
     <footer class="footer">
         <p>&copy; 2025 Farmly. Grown with care in Delta State. Delivered to Lagos.</p>
     </footer>
+
+    <!-- Optional JavaScript for mobile menu toggle and dynamic facts -->
+    <script>
+        document.getElementById('menu-toggle').addEventListener('click', () => {
+            document.getElementById('nav-menu').classList.toggle('show');
+        });
+
+    </script>
 
     <script src="home.js"></script>
 </body>

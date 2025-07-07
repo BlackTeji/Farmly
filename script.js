@@ -9,7 +9,6 @@ async function fetchProducts() {
     const res = await fetch(PRODUCTS_URL);
     const data = await res.json();
 
-    // Ensure data is an array
     if (!Array.isArray(data)) throw new Error("Invalid data format");
 
     products = data.map(p => ({
@@ -198,7 +197,6 @@ function payWithPaystack() {
   handler.openIframe();
 }
 
-// Navigation Menu
 function toggleMenu() {
   document.getElementById("nav-menu").classList.toggle("show");
 }
@@ -210,10 +208,9 @@ function closeMenu() {
 document.addEventListener("click", e => {
   const menu = document.getElementById("nav-menu");
   const btn = document.querySelector(".menu-btn");
-  if (!menu.contains(e.target) && !btn.contains(e.target)) closeMenu();
+  if (!menu.contains(e.target) && !btn?.contains(e.target)) closeMenu();
 });
 
-// Initialize when page is ready
 document.addEventListener("DOMContentLoaded", () => {
   fetchProducts();
 
@@ -229,3 +226,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+

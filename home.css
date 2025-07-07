@@ -40,7 +40,7 @@ body {
     display: flex;
     gap: 2rem;
     align-items: center;
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 .nav-menu a {
@@ -63,7 +63,7 @@ body {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(-45deg, #33a353, #fdfaf4, #fdfaf4, #fdca63);
+    background: linear-gradient(-45deg, #33a353, #fdfaf4, #fdfaf4, #f7a605);
     background-size: 400% 400%;
     animation: gradientMove 10s ease-in-out infinite;
     height: 80vh;
