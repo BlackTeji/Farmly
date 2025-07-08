@@ -195,7 +195,7 @@ body {
     font-size: 1.7rem;
     font-weight: 200;
     color: #444;
-    min-height: 35px;
+    min-height: 80px;
     transition: opacity 0.4s ease-in-out;
     opacity: 1;
 }
