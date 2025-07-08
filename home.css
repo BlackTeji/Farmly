@@ -12,7 +12,20 @@ body {
     font-family: 'Inter', sans-serif;
     color: #2a4d3c;
     overflow-x: hidden;
-    padding-bottom: 70px;
+}
+
+html,
+body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Wrapper */
+.page-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header */
@@ -160,6 +173,7 @@ body {
     text-align: center;
     padding: 2.5rem 1rem;
     font-size: 1.2rem;
+    margin-top: auto;
 }
 
 /* Did You Know + Insight */
@@ -187,7 +201,6 @@ body {
     text-align: center;
 }
 
-
 .fact-carousel h2,
 .brand-carousel h2 {
     color: #2a4d3c;
@@ -200,7 +213,6 @@ body {
     font-size: 1.7rem;
     font-weight: 200;
     color: #444;
-    min-height: 10px;
     transition: opacity 0.4s ease-in-out;
     opacity: 1;
 }
@@ -297,13 +309,13 @@ body {
     }
 
     .did-you-know-section {
-        padding-bottom: 15rem;
+        padding-bottom: 2rem;
     }
 
     .footer {
         padding: 2rem 1rem;
         font-size: 0.75rem;
-        margin-top: 5rem;
+        margin-top: 2rem;
     }
 
     .fact-carousel,
@@ -330,22 +342,6 @@ body {
 
     .mobile-spacer {
         display: block;
-        height: 5rem;
+        height: 2rem;
     }
-}
-
-/* Layout Setup */
-html,
-body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-}
-
-.page-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
 }
