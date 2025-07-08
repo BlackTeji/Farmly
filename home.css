@@ -186,7 +186,7 @@ body {
 .fact-carousel h2,
 .brand-carousel h2 {
     color: #2a4d3c;
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
 }
 
@@ -195,9 +195,7 @@ body {
     font-size: 1.7rem;
     font-weight: 200;
     color: #444;
-    min-height: 100px;
-    display: block;
-    overflow: hidden;
+    min-height: 60px;
     transition: opacity 0.4s ease-in-out;
     opacity: 1;
 }
@@ -298,8 +296,8 @@ body {
     }
 
     .footer {
-        padding: 2rem 1rem;
-        font-size: 0.75rem;
+        padding: 1rem 0.5rem;
+        font-size: 0.7rem;
         margin-top: 5rem;
     }
 
