@@ -183,7 +183,7 @@ body {
     align-items: center;
     gap: 2rem;
     padding: 2rem 0.5rem;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem; /* Moderate gap above footer */
     background: transparent;
 }
 
@@ -310,7 +310,8 @@ body {
     }
 
     .did-you-know-section {
-        padding-bottom: 10rem;
+        padding-bottom: 0; /* Remove excessive padding */
+        margin-bottom: 2rem; /* Consistent gap above footer */
     }
 
     .footer {
