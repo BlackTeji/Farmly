@@ -6,12 +6,14 @@
 
 /* Global Styles */
 body {
-    background: linear-gradient(-45deg, #fdfaf4, #f2e7d5, #e6dccb, #fdfaf4);
+    background: linear-gradient(-45deg, #a0f877, #f2e7d5, #e6dccb, #f1ad24);
     background-size: 400% 400%;
-    animation: gradientFlow 12s ease infinite;
+    animation-name: gradientFlow;
+    animation: gradientFlow 20s ease infinite;
     font-family: 'Inter', sans-serif;
     color: #2a4d3c;
     overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 html,
@@ -89,6 +91,7 @@ body {
     align-items: center;
     text-align: center;
     padding: 3rem 1rem;
+    padding-top: 40rem;
     position: relative;
 }
 
@@ -183,7 +186,8 @@ body {
     align-items: center;
     gap: 2rem;
     padding: 2rem 0.5rem;
-    margin-bottom: 25rem; /* Moderate gap above footer */
+    margin-bottom: 25rem;
+    /* Moderate gap above footer */
     background: transparent;
 }
 
