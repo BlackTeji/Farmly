@@ -311,7 +311,7 @@ body {
 
     .did-you-know-section {
         padding-bottom: 0; /* Remove excessive padding */
-        margin-bottom: 2rem; /* Consistent gap above footer */
+        margin-bottom: 25rem; /* Consistent gap above footer */
     }
 
     .footer {
