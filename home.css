@@ -174,14 +174,19 @@ body {
 
 .fact-carousel,
 .brand-carousel {
-    background: #ffffffcc;
+    width: 100%;
+    max-width: 450px;
+    height: 160px;
     padding: 2rem;
+    background: #ffffffcc;
     border-radius: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    width: 100%;
-    min-width: 300px;
-    font-size: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
 }
+
 
 .fact-carousel h2,
 .brand-carousel h2 {
@@ -231,8 +236,8 @@ body {
 
     .fact-carousel,
     .brand-carousel {
-        width: 48%;
-        max-width: 700%;
+        width: 100%;
+        max-width: 450px;
     }
 
     .curve {
@@ -305,8 +310,8 @@ body {
     .brand-carousel {
         padding: 1rem;
         font-size: 0.5rem;
-        width: 90%;
-        min-width: unset;
+        width: 100%;
+        min-width: 350px;
     }
 
     .fact-carousel h2,
