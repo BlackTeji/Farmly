@@ -193,9 +193,9 @@ body {
 .fact-carousel p,
 .brand-carousel p {
     font-size: 1.7rem;
-    font-weight: 200;
+    font-weight: 400;
     color: #444;
-    min-height: 120px;
+    min-height: 50px;
     transition: opacity 0.4s ease-in-out;
     opacity: 1;
 }
