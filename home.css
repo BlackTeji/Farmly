@@ -292,7 +292,7 @@ body {
     }
 
     .hero {
-        padding-top: 8rem;
+        padding-top: 10rem;
         padding-bottom: 0.5rem;
     }
 
@@ -310,13 +310,13 @@ body {
     }
 
     .did-you-know-section {
-        padding-bottom: 0; /* Remove excessive padding */
-        margin-bottom: 25rem; /* Consistent gap above footer */
+        padding-bottom: 0;
+        margin-bottom: 25rem;
     }
 
     .footer {
         padding: 2rem 1rem;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         margin-top: 2rem;
     }
 
@@ -335,7 +335,7 @@ body {
 
     .fact-carousel p,
     .brand-carousel p {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
     }
 
     .curve {
