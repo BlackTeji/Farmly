@@ -14,6 +14,7 @@ body {
     background-size: 400% 400%;
     animation: gradientFlow 12s ease infinite;
     font-family: 'Inter', sans-serif;
+    font-size: 1rem;
     color: #2a4d3c;
     overflow-x: hidden;
 }
@@ -42,16 +43,35 @@ body {
     box-shadow: none;
 }
 
-header h1 {
+h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
     color: #2a4d3c;
-    margin-bottom: 0.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
 
-header p {
-    font-size: 1.2rem;
-    color: #555;
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+p, ul li {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+/* Remove duplicate/conflicting heading styles */
+header h1, header p {
+    font-family: 'Playfair Display', serif;
+    color: #2a4d3c;
+    font-size: inherit;
+    margin-bottom: 0.5rem;
 }
 
 .logo {
@@ -99,39 +119,9 @@ section {
     margin-bottom: 3rem;
 }
 
-h1 {
-    font-size: 1.8rem;
-    font-family: 'Inter', sans-serif;
-    color: #2a4d3c;
-    margin-bottom: 1rem;
-}
-
-h2 {
-    font-size: 1.8rem;
-    font-family: 'Inter', sans-serif;
-    color: #2a4d3c;
-    margin-bottom: 1rem;
-}
-
-p {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    color: #2a4d3c;
-    text-align: justify;
-    line-height: 1.7;
-}
-
 ul {
     list-style: none;
     padding-left: 0;
-}
-
-ul li {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
-    color: #2a4d3c;
-    text-align: justify;
-    line-height: 1.2;
 }
 
 /* Buttons */
@@ -157,6 +147,7 @@ ul li {
 
 .footer {
     background-color: #2a4d3c;
+    color: white;
     text-align: center;
     padding: 2.5rem 1rem;
     font-size: 1.2rem;

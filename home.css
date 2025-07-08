@@ -11,6 +11,7 @@ body {
     animation-name: gradientFlow;
     animation: gradientFlow 20s ease infinite;
     font-family: 'Inter', sans-serif;
+    font-size: 1rem;
     color: #2a4d3c;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -108,6 +109,43 @@ body {
     }
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Playfair Display', serif;
+    color: #2a4d3c;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+p,
+ul li {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+header h1,
+header p {
+    font-family: 'Playfair Display', serif;
+    color: #2a4d3c;
+    font-size: inherit;
+    margin-bottom: 0.5rem;
+}
+
 .hero h1 {
     font-family: 'Playfair Display', serif;
     font-size: 5rem;
@@ -177,6 +215,11 @@ body {
     padding: 2.5rem 1rem;
     font-size: 1.2rem;
     margin-top: auto;
+}
+
+.footer p {
+    color: white;
+    text-align: center;
 }
 
 /* Did You Know + Insight */
