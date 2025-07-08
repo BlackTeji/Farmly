@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Farmly</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <img src="logo.png" alt="Farmly Logo" class="logo">
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        <nav class="nav-menu" id="nav-menu">
+            <a href="index.html" onclick="closeMenu()">Home</a>
+            <a href="shop.html" onclick="closeMenu()">Shop</a>
+            <a href="about.html" onclick="closeMenu()">About</a>
+            <a href="contact.html" onclick="closeMenu()">Contact</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you.</p>
+    </section>
+
+    <main class="main">
+        <section>
+            <h2>Reach Out</h2>
+            <p>Have questions about your order? Want to collaborate or ask about our process? Let’s connect.</p>
+            <ul>
+                <li><strong>Email:</strong> <a href="mailto:hello@farmly.ng">hello@farmly.ng</a></li>
+                <li><strong>Phone:</strong> <a href="tel:+2349036102064">+234 903 610 2064</a></li>
+                <li><strong>WhatsApp:</strong> <a href="https://wa.me/2349036102064" target="_blank">Chat on
+                        WhatsApp</a></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Farm Address</h2>
+            <p>Ughelli North LGA, Delta State, Nigeria</p>
+        </section>
+
+        <section>
+            <h2>Send Us a Message</h2>
+            <form class="customer-form" action="mailto:hello@farmly.ng" method="post" enctype="text/plain">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" rows="6" required></textarea>
+                <button type="submit" class="checkout-btn">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Farmly. Grown with care in Delta State. Delivered to Lagos.</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("nav-menu").classList.toggle("show");
+        }
+        function closeMenu() {
+            document.getElementById("nav-menu").classList.remove("show");
+        }
+        document.addEventListener("click", e => {
+            const menu = document.getElementById("nav-menu");
+            const btn = document.querySelector(".menu-btn");
+            if (!menu.contains(e.target) && !btn.contains(e.target)) closeMenu();
+        });
+    </script>
+</body>
+
+</html>

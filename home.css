@@ -81,8 +81,8 @@ body {
 
 .fade-in-up {
     opacity: 0;
-    transform: translateY(40px);
-    animation: fadeInUp 1.2s ease-out forwards;
+    transform: translateY(45px);
+    animation: fadeInUp 2s ease-out forwards;
 }
 
 @keyframes fadeInUp {

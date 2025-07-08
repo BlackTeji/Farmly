@@ -17,9 +17,16 @@ const brandInsights = [
 let index = 0;
 
 function rotateFacts() {
-    document.getElementById("agri-nutri-fact").textContent = agriNutriFacts[index % agriNutriFacts.length];
-    document.getElementById("brand-fact").textContent = brandInsights[index % brandInsights.length];
-    index++;
+    window.requestAnimationFrame(() => {
+        const fact = document.getElementById("agri-nutri-fact");
+        const insight = document.getElementById("brand-fact");
+
+        if (fact && insight) {
+            fact.textContent = agriNutriFacts[index % agriNutriFacts.length];
+            insight.textContent = brandInsights[index % brandInsights.length];
+            index++;
+        }
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
