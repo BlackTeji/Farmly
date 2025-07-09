@@ -1,7 +1,5 @@
-/* about.css */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display&display=swap');
-
+/* about.css (cleaned) */
+@import url('./typography.css');
 
 * {
     margin: 0;
@@ -17,6 +15,7 @@ body {
     font-size: 1rem;
     color: #2a4d3c;
     overflow-x: hidden;
+    text-align: justify;
 }
 
 html,
@@ -41,37 +40,6 @@ body {
     z-index: 1000;
     border: none;
     box-shadow: none;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
-    color: #2a4d3c;
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
-
-h1 {
-    font-size: 2.5rem;
-}
-
-h2 {
-    font-size: 1.8rem;
-}
-
-p, ul li {
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    color: #333;
-    line-height: 1.7;
-    margin-bottom: 1rem;
-}
-
-/* Remove duplicate/conflicting heading styles */
-header h1, header p {
-    font-family: 'Playfair Display', serif;
-    color: #2a4d3c;
-    font-size: inherit;
-    margin-bottom: 0.5rem;
 }
 
 .logo {
@@ -124,7 +92,6 @@ ul {
     padding-left: 0;
 }
 
-/* Buttons */
 .cta-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -168,26 +135,6 @@ ul {
         font-size: 1.5rem;
     }
 
-    .cta-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        margin-top: 2rem;
-    }
-
-    .cta-buttons a {
-        text-decoration: none;
-        background-color: #ca5c2c;
-        color: white;
-        padding: 0.8rem 1.5rem;
-        border-radius: 5px;
-        transition: background 0.3s ease-in-out;
-    }
-
-    .cta-buttons a:hover {
-        background-color: #b14e23;
-    }
-
     .nav-menu {
         display: none;
         flex-direction: column;
@@ -212,7 +159,6 @@ ul {
         font-size: 1.5rem;
         cursor: pointer;
         margin-left: auto;
-        color: #2a4d3c;
     }
 
     .logo {
@@ -225,5 +171,30 @@ ul {
         margin-top: 4rem;
     }
 
+    .cta-buttons a {
+        font-size: 0.85rem;
+        padding: 0.6rem 1.2rem;
+    }
 
+    html,
+    body {
+        overscroll-behavior: none;
+        overflow-y: scroll;
+        height: 100%;
+    }
+
+}
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }

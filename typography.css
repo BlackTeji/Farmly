@@ -1,0 +1,87 @@
+/* typography.css */
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display&display=swap');
+
+/* Global Typography Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Base Font Settings */
+body {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: #2a4d3c;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Playfair Display', serif;
+    color: #2a4d3c;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.2rem;
+}
+
+h5 {
+    font-size: 1rem;
+}
+
+h6 {
+    font-size: 0.9rem;
+}
+
+/* Paragraphs & List Items */
+p,
+ul li {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+/* Link Styles */
+a {
+    text-decoration: none;
+    color: #2a4d3c;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #ca5c2c;
+}
+
+/* Header-specific Text */
+header h1,
+header p {
+    font-family: 'Playfair Display', serif;
+    color: #2a4d3c;
+    font-size: inherit;
+    margin-bottom: 0.5rem;
+}
