@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     rotateFacts();
     setInterval(rotateFacts, 8000);
 
-    // Prevent anchor links from jumping to top
     document.querySelectorAll('a[href="#"]').forEach(link => {
         link.addEventListener('click', e => e.preventDefault());
     });

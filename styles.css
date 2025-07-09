@@ -1,6 +1,5 @@
 @import url('./typography.css');
 
-/* Reset & base layout */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -24,7 +23,6 @@ body {
     padding-bottom: 80px;
 }
 
-/* Gradient animation */
 @keyframes gradientFlow {
     0% {
         background-position: 0% 50%;
@@ -39,14 +37,12 @@ body {
     }
 }
 
-/* Layout wrapper */
 .page-wrapper {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* Header */
 .header {
     position: fixed;
     top: 0;
@@ -92,7 +88,6 @@ body {
     z-index: 1001;
 }
 
-/* Hero */
 .hero {
     text-align: center;
     padding: 3rem 1rem 1rem;
@@ -106,7 +101,6 @@ body {
     margin-bottom: 1rem;
 }
 
-/* Main */
 .main {
     display: flex;
     flex-wrap: wrap;
@@ -118,7 +112,6 @@ body {
     max-width: 1100px;
 }
 
-/* Product Grid */
 .product-grid {
     flex: 1 1 50%;
     display: grid;
@@ -188,7 +181,6 @@ body {
     margin-top: 0.5rem;
 }
 
-/* Checkout */
 .checkout-container {
     flex: 1 1 35%;
     display: flex;
