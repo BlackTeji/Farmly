@@ -115,7 +115,9 @@ ul {
     margin-bottom: 28px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.89rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
 }
 
 .checkout-btn:hover {
@@ -185,7 +187,7 @@ ul {
     }
 
     .footer {
-        font-size: 0.5rem;
+        font-size: 0.3rem;
     }
 
     html,
