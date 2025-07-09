@@ -71,7 +71,7 @@ body {
 
 .hero {
     background: none;
-    height: 90vh;
+    height: 10vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -140,7 +140,7 @@ body {
     align-items: center;
     gap: 2rem;
     padding: 2rem 0.5rem;
-    margin-bottom: 90rem;
+    margin-bottom: 5rem;
     background: transparent;
 }
 
@@ -148,6 +148,7 @@ body {
 .brand-carousel {
     width: 100%;
     max-width: 450px;
+    min-width: 450px;
     height: 160px;
     padding: 2rem;
     background: #ffffffcc;
@@ -186,25 +187,6 @@ body {
     }
 }
 
-@keyframes waveFlow {
-    0% {
-        transform: translateX(0);
-    }
-
-    50% {
-        transform: translateX(-20px);
-    }
-
-    100% {
-        transform: translateX(0);
-    }
-}
-
-@keyframes fadeInWave {
-    to {
-        opacity: 1;
-    }
-}
 
 @media (min-width: 768px) {
     .did-you-know-section {
@@ -250,7 +232,7 @@ body {
     }
 
     .hero {
-        padding-top: 30rem;
+        height: 75vh;
         padding-bottom: 0.5rem;
     }
 
