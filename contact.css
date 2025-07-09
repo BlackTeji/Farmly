@@ -190,12 +190,18 @@ ul {
         font-size: 0.3rem;
     }
 
-    html,
-    body {
-        overscroll-behavior: none;
-        overflow-y: scroll;
-        height: 100%;
+    .footer {
+        margin-top: auto;
     }
+
+
+    .page-wrapper,
+    main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
 }
 
 @keyframes gradientFlow {
