@@ -71,7 +71,7 @@ body {
 
 .hero {
     background: none;
-    height: 84vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -140,7 +140,7 @@ body {
     align-items: center;
     gap: 2rem;
     padding: 2rem 0.5rem;
-    margin-bottom: 25rem;
+    margin-bottom: 70rem;
     background: transparent;
 }
 
