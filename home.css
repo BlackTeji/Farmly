@@ -299,17 +299,11 @@ body {
     .curve {
         display: none;
     }
-}
 
-@media (max-width: 600px) {
     .footer {
         font-size: 0.3rem;
+        margin-top: auto;
     }
 
-    html,
-    body {
-        overscroll-behavior: none;
-        overflow-y: scroll;
-        height: 100%;
-    }
+
 }
