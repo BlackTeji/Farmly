@@ -168,7 +168,6 @@ ul {
     .footer {
         padding: 0.5rem 1rem;
         font-size: 0.3rem;
-        margin-top: 4rem;
     }
 
     .cta-buttons a {
@@ -176,11 +175,16 @@ ul {
         padding: 0.6rem 1.2rem;
     }
 
-    html,
-    body {
-        overscroll-behavior: none;
-        overflow-y: scroll;
-        height: 100%;
+    .footer {
+        margin-top: auto;
+    }
+
+
+    .page-wrapper,
+    main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
 
 }
