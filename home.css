@@ -232,7 +232,7 @@ body {
     }
 
     .hero {
-        height: 75vh;
+        height: 85vh;
         padding-bottom: 0.5rem;
     }
 
@@ -251,7 +251,7 @@ body {
 
     .did-you-know-section {
         padding-bottom: 0;
-        margin-bottom: 55rem;
+        margin-bottom: 65rem;
     }
 
     .fact-carousel,
