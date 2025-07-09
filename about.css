@@ -1,4 +1,4 @@
-/* about.css (cleaned) */
+/* about.css (final cleaned) */
 @import url('./typography.css');
 
 * {
@@ -7,25 +7,27 @@
     box-sizing: border-box;
 }
 
+html,
 body {
-    background: linear-gradient(-45deg, #fdfaf4, #f2e7d5, #e6dccb, #fdfaf4);
-    background-size: 400% 400%;
-    animation: gradientFlow 12s ease infinite;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     font-family: 'Inter', sans-serif;
     font-size: 1rem;
     color: #2a4d3c;
-    overflow-x: hidden;
+    background: linear-gradient(-45deg, #fdfaf4, #f2e7d5, #e6dccb, #fdfaf4);
+    background-size: 400% 400%;
+    animation: gradientFlow 12s ease infinite;
     text-align: justify;
 }
 
-html,
-body {
-    height: 100%;
+.page-wrapper {
     display: flex;
     flex-direction: column;
-    padding-top: 50px;
+    min-height: 100vh;
 }
 
+/* Header */
 .header {
     position: fixed;
     top: 0;
@@ -54,10 +56,6 @@ body {
     font-size: 1.2rem;
 }
 
-.nav-menu.show {
-    display: flex;
-}
-
 .nav-menu a {
     text-decoration: none;
     color: #2a4d3c;
@@ -76,11 +74,20 @@ body {
     color: #2a4d3c;
 }
 
+/* Content */
 main {
     max-width: 800px;
     margin: 2rem auto;
-    padding: 0 1rem;
-    padding-top: 5rem;
+    margin-top: 120px;
+    padding: 6rem 1rem 2rem;
+    flex: 1;
+}
+
+main p,
+main li {
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
 }
 
 section {
@@ -112,6 +119,7 @@ ul {
     background-color: #b14e23;
 }
 
+/* Footer */
 .footer {
     background-color: #2a4d3c;
     color: white;
@@ -126,6 +134,22 @@ ul {
     text-align: center;
 }
 
+/* Gradient Animation */
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Mobile Styles */
 @media (max-width: 600px) {
     header h1 {
         font-size: 1.8rem;
@@ -165,10 +189,14 @@ ul {
         height: 70px;
     }
 
-    .footer {
-        padding: 0.5rem 1rem;
-        font-size: 0.3rem;
-    }
+    main {
+    max-width: 800px;
+    margin: 2rem auto;
+    margin-top: 50px;
+    padding: 6rem 1rem 2rem;
+    flex: 1;
+}
+
 
     .cta-buttons a {
         font-size: 0.85rem;
@@ -176,29 +204,8 @@ ul {
     }
 
     .footer {
+        padding: 0.5rem 1rem;
+        font-size: 0.3rem;
         margin-top: auto;
-    }
-
-
-    .page-wrapper,
-    main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-}
-
-@keyframes gradientFlow {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
     }
 }

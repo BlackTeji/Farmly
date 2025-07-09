@@ -1,8 +1,13 @@
 /* shop.css (cleaned) */
 @import url('./typography.css');
 
-html {
+html,
+body {
+    overflow-x: hidden;
     overflow-y: scroll;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 * {
@@ -19,7 +24,6 @@ body {
     font-family: 'Inter', sans-serif;
     padding-top: 100px;
     padding-bottom: 80px;
-    overflow-x: hidden;
 }
 
 /* Gradient animation */
@@ -377,6 +381,7 @@ ul li {
     color: #333;
     line-height: 1.7;
     margin-bottom: 1rem;
+    font-weight: 300;
 }
 
 .footer {
@@ -497,20 +502,9 @@ ul li {
     }
 }
 
-.footer {
-    margin-top: auto;
-}
-
-
 .page-wrapper,
 main {
     flex: 1;
     display: flex;
     flex-direction: column;
-}
-
-
-
-.footer {
-    font-size: 0.5rem;
 }
