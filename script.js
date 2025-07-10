@@ -1,5 +1,5 @@
-const PRODUCTS_URL = "https://sheetdb.io/api/v1/n3htzcmigb7ez?sheet=Products";
-const ORDERS_URL = "https://sheetdb.io/api/v1/n3htzcmigb7ez?sheet=Orders";
+const PRODUCTS_URL = "https://sheetdb.io/api/v1/ps7igjn24dxxe?sheet=Products";
+const ORDERS_URL = "https://sheetdb.io/api/v1/ps7igjn24dxxe?sheet=Orders";
 
 let products = [];
 const cart = {};
