@@ -4,6 +4,15 @@ const ORDERS_URL = "https://sheetdb.io/api/v1/ps7igjn24dxxe?sheet=Orders";
 let products = [];
 const cart = {};
 
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
+
 const deliveryCycles = [
   { cutoff: "2025-07-25", start: "2025-07-28", end: "2025-07-31", batch: "2025-07" },
   { cutoff: "2025-08-12", start: "2025-08-15", end: "2025-08-18", batch: "2025-08" }
@@ -93,9 +102,9 @@ function renderCart() {
   const deliveryType = document.getElementById("cust-delivery")?.value || "";
   let deliveryFee = 0;
   if (deliveryType.toLowerCase().includes("standard")) {
-    deliveryFee = 5000;
+    deliveryFee = 3000;
   } else if (deliveryType.toLowerCase().includes("express")) {
-    deliveryFee = 8000;
+    deliveryFee = 5000;
   }
 
   subtotalDisplay.innerText = `₦${subtotal.toLocaleString()}`;
@@ -121,10 +130,12 @@ function updateDeliveryInfo() {
   const timerEl = document.getElementById("countdown-timer");
 
   if (today <= cutoff) {
-    messageEl.textContent = `Place your order before ${cycle.cutoff} to enjoy fresh farm produce delivered starting ${cycle.start}.`;
+    messageEl.textContent = `Place your order before ${formatDate(cycle.cutoff)} to enjoy fresh farm produce delivered starting ${formatDate(cycle.start)}.`;
+
   } else {
     const nextCycle = deliveryCycles[nextIndex + 1] || cycle;
-    messageEl.textContent = `⏳ We're preparing for the next batch! Orders now will be delivered from ${nextCycle.start}. Thank you for your patience.`;
+    messageEl.textContent = `⏳ We're preparing for the next batch! Orders now will be delivered from ${formatDate(nextCycle.start)}. Thank you for your patience.`;
+
   }
 
 
@@ -137,7 +148,7 @@ function updateDeliveryInfo() {
     }
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    timerEl.textContent = `Next Order Cut-off in ${days} days ${hours} hours.`;
+    timerEl.textContent = `Current order window closes in ${days} days ${hours} hours.`;
   }
 
   countdown();
@@ -209,7 +220,7 @@ function payWithPaystack() {
             Order: summary,
             Total: totalAmount,
             BatchID: batchInfo.batch,
-            DeliveryRange: `${batchInfo.start} - ${batchInfo.end}`,
+            DeliveryRange: `${formatDate(batchInfo.start)} - ${formatDate(batchInfo.end)}`,
             Reference: response.reference,
             Email: email
           }]
