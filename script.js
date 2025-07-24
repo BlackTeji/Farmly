@@ -4,6 +4,12 @@ const ORDERS_URL = "https://sheetdb.io/api/v1/ps7igjn24dxxe?sheet=Orders";
 let products = [];
 const cart = {};
 
+const deliveryCycles = [
+  { cutoff: "2025-07-25", start: "2025-07-28", end: "2025-07-31", batch: "2025-07" },
+  { cutoff: "2025-08-12", start: "2025-08-15", end: "2025-08-18", batch: "2025-08" }
+];
+
+// Fetch products
 async function fetchProducts() {
   try {
     const container = document.getElementById("product-list");
@@ -31,6 +37,7 @@ async function fetchProducts() {
   }
 }
 
+// Render products
 function renderProducts() {
   const container = document.getElementById("product-list");
   container.innerHTML = "";
@@ -53,6 +60,7 @@ function renderProducts() {
   });
 }
 
+// Cart updates
 function updateCart(id, delta) {
   cart[id] = Math.max(0, (cart[id] || 0) + delta);
   document.getElementById(`qty-${id}`).innerText = cart[id];
@@ -95,14 +103,48 @@ function renderCart() {
   totalDisplay.innerText = `₦${(subtotal + deliveryFee).toLocaleString()}`;
 }
 
-function showModal() {
-  document.getElementById("success-modal").classList.remove("hidden");
+// Delivery cycle logic
+function getCurrentCycle() {
+  const today = new Date();
+  for (let i = 0; i < deliveryCycles.length; i++) {
+    const cutoffDate = new Date(deliveryCycles[i].cutoff);
+    if (today <= cutoffDate) return { cycle: deliveryCycles[i], nextIndex: i };
+  }
+  return { cycle: deliveryCycles[deliveryCycles.length - 1], nextIndex: deliveryCycles.length - 1 };
 }
 
-function closeModal() {
-  document.getElementById("success-modal").classList.add("hidden");
+function updateDeliveryInfo() {
+  const { cycle, nextIndex } = getCurrentCycle();
+  const today = new Date();
+  const cutoff = new Date(cycle.cutoff);
+  const messageEl = document.getElementById("delivery-message");
+  const timerEl = document.getElementById("countdown-timer");
+
+  if (today <= cutoff) {
+    messageEl.textContent = `Place your order before ${cycle.cutoff} to enjoy fresh farm produce delivered starting ${cycle.start}.`;
+  } else {
+    const nextCycle = deliveryCycles[nextIndex + 1] || cycle;
+    messageEl.textContent = `⏳ We're preparing for the next batch! Orders now will be delivered from ${nextCycle.start}. Thank you for your patience.`;
+  }
+
+
+  function countdown() {
+    const now = new Date();
+    const diff = cutoff - now;
+    if (diff <= 0) {
+      timerEl.textContent = "Order Cut-off passed! Next cycle starts soon.";
+      return;
+    }
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    timerEl.textContent = `Next Order Cut-off in ${days} days ${hours} hours.`;
+  }
+
+  countdown();
+  setInterval(countdown, 1000);
 }
 
+// Paystack
 function payWithPaystack() {
   const name = document.getElementById("cust-name").value.trim();
   const phone = document.getElementById("cust-phone").value.trim();
@@ -130,13 +172,14 @@ function payWithPaystack() {
 
   let deliveryFee = 0;
   if (delivery.toLowerCase().includes("standard")) {
-    deliveryFee = 5000;
+    deliveryFee = 3000;
   } else if (delivery.toLowerCase().includes("express")) {
-    deliveryFee = 8000;
+    deliveryFee = 5000;
   }
 
   const totalPayable = totalAmount + deliveryFee;
   const summary = items.join("; ");
+  const batchInfo = getCurrentCycle().cycle;
 
   const handler = PaystackPop.setup({
     key: "pk_test_93fb0a0817cffc7772f7084f3c388fda026c98f9",
@@ -165,6 +208,8 @@ function payWithPaystack() {
             Delivery: delivery,
             Order: summary,
             Total: totalAmount,
+            BatchID: batchInfo.batch,
+            DeliveryRange: `${batchInfo.start} - ${batchInfo.end}`,
             Reference: response.reference,
             Email: email
           }]
@@ -174,16 +219,22 @@ function payWithPaystack() {
         .then(result => {
           if (result.created > 0) {
             showModal();
+
+            // Reset cart quantities and UI
             Object.keys(cart).forEach(id => {
               cart[id] = 0;
               document.getElementById(`qty-${id}`).innerText = "0";
             });
-            renderCart();
+
+            // Clear delivery selection and other inputs
+            document.getElementById("cust-delivery").value = "";
             document.getElementById("cust-name").value = "";
             document.getElementById("cust-phone").value = "";
             document.getElementById("cust-location").value = "";
-            document.getElementById("cust-delivery").value = "";
             document.getElementById("cust-email").value = "";
+
+            // Re-render cart summary (subtotal, delivery fee, total)
+            renderCart();
           } else {
             alert("❌ Payment succeeded, but order not saved.");
             console.error(result);
@@ -202,8 +253,19 @@ function payWithPaystack() {
   handler.openIframe();
 }
 
+// Modal
+function showModal() {
+  document.getElementById("success-modal").classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("success-modal").classList.add("hidden");
+}
+
+// Init
 document.addEventListener("DOMContentLoaded", () => {
   fetchProducts();
+  updateDeliveryInfo();
 
   const deliverySelect = document.getElementById("cust-delivery");
   if (deliverySelect) {

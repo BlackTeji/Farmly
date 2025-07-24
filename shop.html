@@ -17,10 +17,10 @@
         <header class="header">
             <img src="logo.png" alt="Farmly Logo" class="logo" />
 
-            <!-- Hamburger Menu Toggle Button -->
+            <!-- Hamburger Menu -->
             <div class="menu-toggle" id="menu-toggle">☰</div>
 
-            <!-- Navigation Menu -->
+            <!-- Navigation -->
             <nav class="nav-menu" id="nav-menu">
                 <a href="index.html">Home</a>
                 <a href="shop.html">Shop</a>
@@ -29,51 +29,46 @@
             </nav>
         </header>
 
-        <!-- Hero Section -->
+        <!-- Hero -->
         <section class="hero">
-            <h1>Curate your Order</h1>
-        </section>
+  <div id="delivery-info-box" class="sliding-box">
+    <h2 id="delivery-message" class="delivery-message">Loading delivery info...</h2>
+    <p id="countdown-timer" class="delivery-timer"></p>
+  </div>
+</section>
 
         <!-- Main Layout -->
         <main class="main" role="main">
+            <!-- Products -->
             <div class="product-grid" id="product-list">
-                <!-- Products will load here -->
+                <!-- Products load dynamically -->
             </div>
 
+            <!-- Checkout -->
             <div class="checkout-container" id="checkout-section">
-                <!-- Cart Summary -->
+                <!-- Cart -->
                 <div class="checkout-card cart-summary">
                     <h2><span>🛒</span> Your Cart</h2>
                     <div id="cart-items" class="cart-item-list"></div>
                     <hr />
                     <div class="cart-summary-values">
-                        <div class="cart-row">
-                            <span>Subtotal:</span>
-                            <span id="cart-subtotal">₦0</span>
-                        </div>
-                        <div class="cart-row">
-                            <span>Delivery Fee:</span>
-                            <span id="cart-delivery-fee">₦0</span>
-                        </div>
-                        <div class="cart-row total-row">
-                            <strong>Total:</strong>
-                            <strong id="cart-total">₦0</strong>
-                        </div>
+                        <div class="cart-row"><span>Subtotal:</span><span id="cart-subtotal">₦0</span></div>
+                        <div class="cart-row"><span>Delivery Fee:</span><span id="cart-delivery-fee">₦0</span></div>
+                        <div class="cart-row total-row"><strong>Total:</strong><strong id="cart-total">₦0</strong></div>
                     </div>
                 </div>
 
-                <!-- Customer Info -->
+                <!-- Customer Form -->
                 <div class="checkout-card customer-form">
                     <h2><span>🚚</span> Delivery Details</h2>
-                    <input type="text" id="cust-name" placeholder="Full Name" required autocomplete="name" />
-                    <input type="tel" id="cust-phone" placeholder="Phone Number" required autocomplete="tel" />
-                    <input type="text" id="cust-location" placeholder="Delivery Address" required
-                        autocomplete="street-address" />
-                    <input type="email" id="cust-email" placeholder="Email Address" required autocomplete="email" />
+                    <input type="text" id="cust-name" placeholder="Full Name" required />
+                    <input type="tel" id="cust-phone" placeholder="Phone Number" required />
+                    <input type="text" id="cust-location" placeholder="Delivery Address" required />
+                    <input type="email" id="cust-email" placeholder="Email Address" required />
                     <select id="cust-delivery" required>
                         <option value="">Choose Delivery Type</option>
-                        <option value="Standard (1 week)">Standard Delivery – 1 Week</option>
-                        <option value="Express (3 Days)">Express Delivery – 3 Days</option>
+                        <option value="Standard (1 week)">Standard Delivery</option>
+                        <option value="Express (3 Days)">Express Delivery – 1 week</option>
                     </select>
                     <button class="checkout-btn" onclick="payWithPaystack()">Pay Now</button>
                 </div>
@@ -81,45 +76,41 @@
         </main>
 
         <!-- Success Modal -->
-        <div id="success-modal" class="modal hidden" role="dialog" aria-labelledby="success-title" aria-modal="true">
+        <div id="success-modal" class="modal hidden">
             <div class="modal-content">
-                <h2 id="success-title">Order Placed!</h2>
+                <h2>Order Placed!</h2>
                 <p>Thank you for ordering with Farmly. We'll contact you shortly.</p>
                 <button onclick="closeModal()" class="modal-close-btn">Close</button>
             </div>
         </div>
+    </div>
 
-        <!-- Load Core Script -->
-        <script src="script.js"></script>
+    <!-- Core JS -->
+    <script src="script.js"></script>
 
-        <!-- Mobile Navigation Toggle -->
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                const menuToggle = document.getElementById("menu-toggle");
-                const navMenu = document.getElementById("nav-menu");
+    <!-- Mobile Menu -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const menuToggle = document.getElementById("menu-toggle");
+            const navMenu = document.getElementById("nav-menu");
 
-                if (menuToggle && navMenu) {
-                    menuToggle.addEventListener("click", () => {
-                        navMenu.classList.toggle("show");
-                    });
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener("click", () => {
+                    navMenu.classList.toggle("show");
+                });
 
-                    document.addEventListener("click", (event) => {
-                        if (
-                            !navMenu.contains(event.target) &&
-                            !menuToggle.contains(event.target)
-                        ) {
-                            navMenu.classList.remove("show");
-                        }
-                    });
+                document.addEventListener("click", (event) => {
+                    if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                        navMenu.classList.remove("show");
+                    }
+                });
 
-                    navMenu.querySelectorAll("a").forEach(link => {
-                        link.addEventListener("click", () => {
-                            navMenu.classList.remove("show");
-                        });
-                    });
-                }
-            });
-        </script>
+                navMenu.querySelectorAll("a").forEach(link => {
+                    link.addEventListener("click", () => navMenu.classList.remove("show"));
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
