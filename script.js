@@ -172,7 +172,7 @@ function payWithPaystack() {
 
   let deliveryFee = 0;
   if (delivery.toLowerCase().includes("standard")) {
-    deliveryFee = 3000;
+    deliveryFee = 2500;
   } else if (delivery.toLowerCase().includes("express")) {
     deliveryFee = 5000;
   }
