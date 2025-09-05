@@ -14,14 +14,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Contact form submission handler (optional enhancement)
+    // Contact form submission handler
     const form = document.getElementById("contact-form");
     const response = document.getElementById("form-response");
 
     if (form && response) {
         form.addEventListener("submit", function (e) {
             e.preventDefault();
-            // Simulate success (you can replace this with actual form handling logic)
+
             response.style.display = "block";
             response.textContent = "Message sent successfully!";
             form.reset();
