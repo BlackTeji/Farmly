@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Curate and order fresh farm produce from Delta to Lagos with Farmly." />
     <title>Farmly Shop – Curate Your Fresh Farm Order</title>
+
     <link rel="stylesheet" href="styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
     <script src="https://js.paystack.co/v1/inline.js"></script>
@@ -13,69 +14,58 @@
 
 <body>
     <div class="page-wrapper">
-        <!-- Header -->
+        <!-- HEADER -->
         <header class="header">
             <img src="logo.png" alt="Farmly Logo" class="logo" />
-
-            <!-- Hamburger Menu -->
             <div class="menu-toggle" id="menu-toggle">☰</div>
-
-            <!-- Navigation -->
             <nav class="nav-menu" id="nav-menu">
                 <a href="index.html">Home</a>
-                <a href="shop.html">Shop</a>
-                <a href="about.html">About</a>
+                <a href="shop.html" class="active">Shop</a>
+                <a href="about.html">FAQ</a>
                 <a href="contact.html">Contact</a>
             </nav>
         </header>
 
-        <!-- Hero -->
+        <!-- HERO SECTION -->
         <section class="hero">
-  <div id="delivery-info-box" class="sliding-box">
-    <h2 id="delivery-message" class="delivery-message">Loading delivery info...</h2>
-    <p id="countdown-timer" class="delivery-timer"></p>
-  </div>
-</section>
-
-        <!-- Main Layout -->
-        <main class="main" role="main">
-            <!-- Products -->
-            <div class="product-grid" id="product-list">
-                <!-- Products load dynamically -->
+            <div id="delivery-info-box">
+                <h2 id="delivery-message">Loading delivery info...</h2>
+                <p id="countdown-timer"></p>
             </div>
+        </section>
 
-            <!-- Checkout -->
+        <!-- MAIN CONTENT -->
+        <main class="main" role="main">
+            <!-- PRODUCTS -->
+            <div class="product-grid" id="product-list"></div>
+
+            <!-- CHECKOUT -->
             <div class="checkout-container" id="checkout-section">
-                <!-- Cart -->
+                <!-- CART SUMMARY -->
                 <div class="checkout-card cart-summary">
                     <h2><span>🛒</span> Your Cart</h2>
                     <div id="cart-items" class="cart-item-list"></div>
                     <hr />
                     <div class="cart-summary-values">
                         <div class="cart-row"><span>Subtotal:</span><span id="cart-subtotal">₦0</span></div>
-                        <div class="cart-row"><span>Delivery Fee:</span><span id="cart-delivery-fee">₦0</span></div>
+                        <div class="cart-row"><span>Delivery Fee:</span><span id="cart-delivery-fee">₦5,000</span></div>
                         <div class="cart-row total-row"><strong>Total:</strong><strong id="cart-total">₦0</strong></div>
                     </div>
                 </div>
 
-                <!-- Customer Form -->
+                <!-- CUSTOMER FORM -->
                 <div class="checkout-card customer-form">
                     <h2><span>🚚</span> Delivery Details</h2>
                     <input type="text" id="cust-name" placeholder="Full Name" required />
                     <input type="tel" id="cust-phone" placeholder="Phone Number" required />
                     <input type="text" id="cust-location" placeholder="Delivery Address" required />
                     <input type="email" id="cust-email" placeholder="Email Address" required />
-                    <select id="cust-delivery" required>
-                        <option value="">Choose Delivery Type</option>
-                        <option value="Standard (1 week)">Standard Delivery</option>
-                        <option value="Express (3 Days)">Express Delivery – 1 week</option>
-                    </select>
-                    <button class="checkout-btn" onclick="payWithPaystack()">Pay Now</button>
+                    <button id="payButton" class="checkout-btn">Pay Now</button>
                 </div>
             </div>
         </main>
 
-        <!-- Success Modal -->
+        <!-- SUCCESS MODAL -->
         <div id="success-modal" class="modal hidden">
             <div class="modal-content">
                 <h2>Order Placed!</h2>
@@ -85,32 +75,80 @@
         </div>
     </div>
 
-    <!-- Core JS -->
+    <!-- DELIVERY CONFIRMATION MODAL -->
+    <div id="deliveryModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Confirm Your Order</h2>
+            <p id="deliveryInfo"></p>
+            <div class="modal-buttons">
+                <button id="proceedToPayBtn" class="confirm-btn">Proceed to Pay</button>
+                <button id="cancelModalBtn" class="cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ RECEIPT MODAL -->
+    <div id="receiptModal" class="hidden fixed inset-0 bg-black/60 z-50 justify-center items-center">
+        <div id="receiptContent" class="bg-white rounded-2xl shadow-lg w-[90%] max-w-md p-6 relative text-center">
+            <button onclick="closeReceiptModal()"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold">×</button>
+
+            <div class="border-b pb-3">
+                <h2 class="text-3xl font-extrabold text-green-700">Farmly</h2>
+                <p class="text-sm text-gray-500">Fresh • Fast • Delivered</p>
+            </div>
+
+            <div class="mt-4 space-y-3">
+                <div>
+                    <p class="text-gray-500 text-sm">Customer Name</p>
+                    <p id="receiptName" class="font-semibold text-gray-800 text-base">John Doe</p>
+                </div>
+
+                <div>
+                    <p class="text-gray-500 text-sm">Transaction Reference</p>
+                    <p id="receiptRef" class="font-mono text-gray-800 text-sm">#REF123456</p>
+                </div>
+
+                <div>
+                    <p class="text-gray-500 text-sm">Items Purchased</p>
+                    <ul id="receiptItems" class="receipt-item-list">
+                        <!-- JS will insert items here -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t mt-4 pt-4 text-sm">
+                <div class="flex justify-center gap-4 mb-1">
+                    <span class="text-gray-500">Subtotal:</span>
+                    <span id="receiptSubtotal" class="font-medium text-gray-800">₦0</span>
+                </div>
+                <div class="flex justify-center gap-4 font-semibold text-green-700">
+                    <span>Total:</span>
+                    <span id="receiptTotal">₦0</span>
+                </div>
+            </div>
+
+            <div class="text-center mt-6">
+                <p class="text-gray-500 text-xs mb-2">Thank you for shopping with <strong>Farmly</strong>!</p>
+                <button id="downloadReceiptBtn"
+                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow text-sm">
+                    Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Farmly. Eat fresh food - Stay Healthy.</p>
+    </footer>
+
+    </div>
+    </div>
+
+    <!-- DEPENDENCIES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="script.js"></script>
-
-    <!-- Mobile Menu -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const menuToggle = document.getElementById("menu-toggle");
-            const navMenu = document.getElementById("nav-menu");
-
-            if (menuToggle && navMenu) {
-                menuToggle.addEventListener("click", () => {
-                    navMenu.classList.toggle("show");
-                });
-
-                document.addEventListener("click", (event) => {
-                    if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
-                        navMenu.classList.remove("show");
-                    }
-                });
-
-                navMenu.querySelectorAll("a").forEach(link => {
-                    link.addEventListener("click", () => navMenu.classList.remove("show"));
-                });
-            }
-        });
-    </script>
 </body>
 
 </html>

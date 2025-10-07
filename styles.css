@@ -1,5 +1,14 @@
 @import url('./typography.css');
 
+body,
+button,
+input,
+select,
+textarea {
+    font-family: 'Inter', sans-serif;
+}
+
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -46,8 +55,8 @@ body {
 .header {
     position: fixed;
     top: 0;
-    width: 100%;
-    
+    left: 0;
+    right: 0;
     background: linear-gradient(-45deg, #fdfaf4, #f2e7d5, #e6dccb, #fdfaf4);
     background-size: 400% 400%;
     animation: gradientFlow 20s ease infinite;
@@ -56,7 +65,10 @@ body {
     align-items: center;
     padding: 1rem 1.5rem;
     z-index: 1000;
+    box-shadow: none;
+    border: none;
 }
+
 
 .logo {
     height: 150px;
@@ -115,7 +127,7 @@ body {
 }
 
 /* Delivery Info Section */
-.delivery-info {
+*.delivery-info {
     text-align: center;
     background: #fff;
     border-radius: 12px;
@@ -127,8 +139,8 @@ body {
 }
 
 .delivery-message {
-    font-size: 1.2rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 200;
     margin-bottom: 0.5rem;
 }
 
@@ -161,14 +173,41 @@ body {
     will-change: transform;
 }
 
-@keyframes slide-left {
-    0% {
-        transform: translateX(100%);
-    }
+/* Delivery Banner */
+.delivery-banner {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px 15px;
+    background-color: #faf6ea;
+    border-left: 4px solid #99b99a;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
 
-    100% {
-        transform: translateX(-350%);
-    }
+.delivery-banner h2 {
+    margin: 0 0 5px;
+    font-size: 0.5rem;
+    font-weight: 300;
+    color: #31572a;
+}
+
+.delivery-banner p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+
+/*@keyframes slide-left {
+0% {
+    transform: translateX(100%);
+}
+
+100% {
+    transform: translateX(-350%);
+}
 }
 
 .sliding-box h2,
@@ -180,7 +219,7 @@ body {
 .sliding-box:hover h2,
 .sliding-box:hover p {
     animation-play-state: paused;
-}
+}*/
 
 
 .product-grid {
@@ -362,28 +401,72 @@ body {
     background: #1e3a2b;
 }
 
-/* Modal */
-.modal {
+.footer {
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+    background-color: #2a4d3c;
+    color: white;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1;
+    height: 30px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    z-index: 10000;
+    justify-content: center;
+    z-index: 999;
 }
 
-.modal-content {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    text-align: center;
-    max-width: 90%;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+.footer p {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    color: white;
 }
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(6px);
+}
+
+/* Delivery Modal – Compact Centered Card */
+#deliveryModal .modal-content {
+    background: white;
+    padding: 1.8rem 1.5rem;
+    border-radius: 14px;
+    text-align: center;
+    width: 90%;
+    max-width: 380px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    animation: popIn 0.3s ease;
+    position: relative;
+}
+
+/* Subtle pop animation */
+@keyframes popIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 
 .modal-content h2 {
     margin-top: 0;
@@ -404,6 +487,192 @@ body {
     border-radius: 6px;
     cursor: pointer;
 }
+
+#proceedToPayBtn {
+    background-color: #2a4d3c;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+#proceedToPayBtn:hover {
+    background-color: #1e3a2b;
+}
+
+#cancelModalBtn {
+    background-color: #d30707;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+#cancelModalBtn:hover {
+    background-color: #b0b0b0;
+}
+
+
+#deliveryModal .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: #555;
+    cursor: pointer;
+}
+
+#cancelBtn {
+    background-color: #2a4d3c;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+#cancelBtn:hover {
+    background-color: #b0b0b0;
+}
+
+/*RECEIPT MODAL */
+#receiptModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#receiptModal.show {
+    display: flex;
+}
+
+/* --- RECEIPT STYLING UPGRADE --- */
+
+#receiptContent {
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 420px;
+    padding: 2rem;
+    text-align: center;
+    animation: fadeIn 0.3s ease-out;
+    margin: auto;
+}
+
+#receiptContent h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #2a4d3c;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    letter-spacing: 1px;
+}
+
+/* Centralize all text and make it neat */
+#receiptContent p,
+#receiptContent ul,
+#receiptContent li {
+    text-align: center;
+    margin: 0.3rem auto;
+    color: #333;
+    font-size: 1rem;
+}
+
+/* Add a subtle divider for professionalism */
+#receiptContent hr {
+    border: none;
+    border-top: 1px dashed #ccc;
+    margin: 1rem auto;
+    width: 80%;
+}
+
+/* Improve item list spacing */
+.receipt-item-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.receipt-item-list li {
+    padding: 0.4rem 0;
+    border-bottom: 1px dotted #ddd;
+    font-size: 1rem;
+}
+
+/* Add spacing to total row */
+#receiptContent .total-row {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+}
+
+/* Enhance download button */
+#downloadReceiptBtn {
+    background: #2a4d3c;
+    color: #fff;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 1.2rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#downloadReceiptBtn:hover {
+    background: #1e3a2b;
+    transform: scale(1.03);
+}
+
+/* Hide download button and close icon when printing or downloading */
+@media print {
+
+    #downloadReceiptBtn,
+    #receiptContent .close {
+        display: none !important;
+    }
+
+    /* Make the receipt fit nicely on A5 or half page */
+    #receiptContent {
+        box-shadow: none;
+        border: none;
+        width: 100%;
+        max-width: 500px;
+        margin: auto;
+    }
+
+    body {
+        background: white;
+    }
+}
+
+
+/* Subtle animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 
 .hidden {
     display: none;
@@ -567,4 +836,39 @@ ul li {
         font-size: 0.5rem;
         margin-top: 4rem;
     }
+}
+
+/* Delivery Info Box */
+#delivery-info-box {
+    max-width: 600px;
+    margin: 0.5rem auto 1.5rem auto;
+    padding: 12px 18px;
+    background-color: #faf6ea;
+    border-left: 4px solid #99b99a;
+    border-radius: 10px;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    color: #2a4d3c;
+    line-height: 1.6;
+    font-size: rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+    top: -10px;
+}
+
+/* Headline inside box */
+#delivery-info-box h2 {
+    font-weight: 400;
+    font-size: 1.3rem;
+    color: #284b22;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+}
+
+/* Countdown / subtext */
+#delivery-info-box p {
+    font-weight: 300;
+    font-size: 0.8rem;
+    color: #3a6953;
+    margin: 0;
 }

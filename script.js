@@ -4,300 +4,453 @@ const ORDERS_URL = "https://sheetdb.io/api/v1/ps7igjn24dxxe?sheet=Orders";
 let products = [];
 const cart = {};
 
-function formatDate(dateString) {
-  const date = new Date(dateString);
+const STANDARD_DELIVERY_FEE = 5000;
+// NOTE: keep true if you want delivery fee waived by default; set false to charge.
+let deliveryWaived = true;
+
+function formatDate(dateOrString) {
+  if (!dateOrString) return "";
+  const date = (dateOrString instanceof Date) ? dateOrString : new Date(dateOrString);
+  if (isNaN(date.getTime())) return "";
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
   return `${day}-${month}-${year}`;
 }
 
-
-const deliveryCycles = [
-  { cutoff: "2025-07-25", start: "2025-07-28", end: "2025-07-31", batch: "2025-07" },
-  { cutoff: "2025-08-12", start: "2025-08-15", end: "2025-08-18", batch: "2025-08" }
-];
-
 // Fetch products
 async function fetchProducts() {
+  const container = document.getElementById("product-list");
+  if (!container) return console.warn("No #product-list in DOM");
+  container.innerHTML = "<p>⏳ Loading products...</p>";
+
   try {
-    const container = document.getElementById("product-list");
-    container.innerHTML = "<p>⏳ Loading products...</p>";
-
     const res = await fetch(PRODUCTS_URL);
+    if (!res.ok) throw new Error(`Network error: ${res.status}`);
     const data = await res.json();
-
-    if (!Array.isArray(data)) throw new Error("Invalid data format");
+    if (!Array.isArray(data)) throw new Error("Invalid data format from products endpoint");
 
     products = data.map(p => ({
-      id: p.ID,
-      name: p.Product,
-      price: Number(p.Price),
-      unit: p.Unit,
-      available: String(p.Available).toLowerCase() === "true",
-      image: `img/${p.ID}.jpg`
-    }));
+      id: String(p.ID ?? p.id ?? p.Id ?? ""), // tolerant mapping
+      name: p.Product ?? p.product ?? p.Name ?? "Unnamed product",
+      price: Number(p.Price ?? p.price ?? 0),
+      unit: p.Unit ?? p.unit ?? "unit",
+      available: String(p.Available ?? p.available ?? "true").toLowerCase() === "true",
+      image: `img/${p.ID ?? p.id ?? p.Id ?? 'default'}.jpg`
+    })).filter(p => p.id !== "");
 
-    products.forEach(p => cart[p.id] = 0);
+    // initialize cart counts for products present
+    products.forEach(p => cart[p.id] = cart[p.id] || 0);
+
     renderProducts();
+    renderCart();
   } catch (err) {
-    console.error("Error fetching products:", err);
-    document.getElementById("product-list").innerHTML = "<p>⚠️ Unable to load products.</p>";
+    console.error(err);
+    container.innerHTML = "<p>⚠️ Unable to load products.</p>";
   }
 }
 
 // Render products
 function renderProducts() {
   const container = document.getElementById("product-list");
+  if (!container) return;
   container.innerHTML = "";
+
+  // build markup using a fragment to avoid reflows
+  const frag = document.createDocumentFragment();
+
   products.forEach(p => {
-    const disabled = !p.available;
-    container.innerHTML += `
-      <div class="product-card">
-        <img src="${p.image}" alt="${p.name}" onerror="this.src='img/default.jpg'" />
-        <h3>${p.name}</h3>
-        <p>₦${p.price} per ${p.unit}</p>
-        <p class="${disabled ? 'unavailable' : 'text-green-700'}">
-          ${disabled ? '❌ Out of stock' : '✅ Available'}
-        </p>
-        <div>
-          <button onclick="updateCart('${p.id}', -1)" ${disabled ? "disabled" : ""}>-</button>
-          <span id="qty-${p.id}">0</span>
-          <button onclick="updateCart('${p.id}', 1)" ${disabled ? "disabled" : ""}>+</button>
-        </div>
-      </div>`;
+    const card = document.createElement("div");
+    card.className = "product-card";
+
+    const img = document.createElement("img");
+    img.src = p.image;
+    img.alt = p.name;
+    img.onerror = function () { this.src = 'img/default.jpg'; };
+
+    const h3 = document.createElement("h3");
+    h3.textContent = p.name;
+
+    const priceP = document.createElement("p");
+    priceP.textContent = `₦${p.price} per ${p.unit}`;
+
+    const availP = document.createElement("p");
+    availP.className = p.available ? "text-green-700" : "unavailable";
+    availP.textContent = p.available ? "✅ Available" : "❌ Out of stock";
+
+    const controls = document.createElement("div");
+
+    const minusBtn = document.createElement("button");
+    minusBtn.textContent = "-";
+    minusBtn.disabled = !p.available;
+    minusBtn.addEventListener("click", () => updateCart(p.id, -1));
+
+    const qtySpan = document.createElement("span");
+    qtySpan.id = `qty-${p.id}`;
+    qtySpan.textContent = cart[p.id] ?? 0;
+
+    const plusBtn = document.createElement("button");
+    plusBtn.textContent = "+";
+    plusBtn.disabled = !p.available;
+    plusBtn.addEventListener("click", () => updateCart(p.id, 1));
+
+    controls.appendChild(minusBtn);
+    controls.appendChild(qtySpan);
+    controls.appendChild(plusBtn);
+
+    card.appendChild(img);
+    card.appendChild(h3);
+    card.appendChild(priceP);
+    card.appendChild(availP);
+    card.appendChild(controls);
+
+    frag.appendChild(card);
   });
+
+  container.appendChild(frag);
 }
 
 // Cart updates
 function updateCart(id, delta) {
   cart[id] = Math.max(0, (cart[id] || 0) + delta);
-  document.getElementById(`qty-${id}`).innerText = cart[id];
+  const qtyEl = document.getElementById(`qty-${id}`);
+  if (qtyEl) qtyEl.innerText = cart[id];
   renderCart();
 }
 
 function renderCart() {
   const cartContainer = document.getElementById("cart-items");
-  const subtotalDisplay = document.getElementById("cart-subtotal");
   const deliveryFeeDisplay = document.getElementById("cart-delivery-fee");
   const totalDisplay = document.getElementById("cart-total");
 
+  if (!cartContainer || !deliveryFeeDisplay || !totalDisplay) {
+    console.warn("Cart DOM elements missing");
+    return;
+  }
+
   cartContainer.innerHTML = "";
   let subtotal = 0;
+  const frag = document.createDocumentFragment();
 
   for (const id in cart) {
     const qty = cart[id];
     if (qty > 0) {
       const prod = products.find(p => p.id === id);
+      if (!prod) continue;
       const itemTotal = qty * prod.price;
       subtotal += itemTotal;
-      cartContainer.innerHTML += `
-        <div class="cart-item">
-          <span>${prod.name} x${qty}</span>
-          <span>₦${itemTotal.toLocaleString()}</span>
-        </div>`;
+
+      const itemDiv = document.createElement("div");
+      itemDiv.className = "cart-item";
+
+      const left = document.createElement("span");
+      left.textContent = `${prod.name} x${qty}`;
+
+      const right = document.createElement("span");
+      right.textContent = `₦${itemTotal.toLocaleString()}`;
+
+      itemDiv.appendChild(left);
+      itemDiv.appendChild(right);
+      frag.appendChild(itemDiv);
     }
   }
 
-  const deliveryType = document.getElementById("cust-delivery")?.value || "";
-  let deliveryFee = 0;
-  if (deliveryType.toLowerCase().includes("standard")) {
-    deliveryFee = 3000;
-  } else if (deliveryType.toLowerCase().includes("express")) {
-    deliveryFee = 5000;
-  }
+  cartContainer.appendChild(frag);
 
-  subtotalDisplay.innerText = `₦${subtotal.toLocaleString()}`;
-  deliveryFeeDisplay.innerText = `₦${deliveryFee.toLocaleString()}`;
+  const deliveryFee = deliveryWaived ? 0 : STANDARD_DELIVERY_FEE;
+  deliveryFeeDisplay.innerHTML = deliveryWaived
+    ? `<s>₦${STANDARD_DELIVERY_FEE.toLocaleString()}</s> (Waived)`
+    : `₦${STANDARD_DELIVERY_FEE.toLocaleString()}`;
+
   totalDisplay.innerText = `₦${(subtotal + deliveryFee).toLocaleString()}`;
 }
 
-// Delivery cycle logic
-function getCurrentCycle() {
+// Get 2nd & 4th Saturdays (robust across year boundaries)
+function getNextDeliveryDates() {
   const today = new Date();
-  for (let i = 0; i < deliveryCycles.length; i++) {
-    const cutoffDate = new Date(deliveryCycles[i].cutoff);
-    if (today <= cutoffDate) return { cycle: deliveryCycles[i], nextIndex: i };
-  }
-  return { cycle: deliveryCycles[deliveryCycles.length - 1], nextIndex: deliveryCycles.length - 1 };
-}
+  const currentMonth = today.getMonth();
+  const currentYear = today.getFullYear();
 
-function updateDeliveryInfo() {
-  const { cycle, nextIndex } = getCurrentCycle();
-  const today = new Date();
-  const cutoff = new Date(cycle.cutoff);
-  const messageEl = document.getElementById("delivery-message");
-  const timerEl = document.getElementById("countdown-timer");
+  function nthSaturday(year, month, n) {
+    // normalize month/year so month is 0-11
+    const normalized = new Date(year, month, 1);
+    const normYear = normalized.getFullYear();
+    const normMonth = normalized.getMonth();
 
-  if (today <= cutoff) {
-    messageEl.textContent = `Place your order before ${formatDate(cycle.cutoff)} to enjoy fresh farm produce delivered starting ${formatDate(cycle.start)}.`;
-
-  } else {
-    const nextCycle = deliveryCycles[nextIndex + 1] || cycle;
-    messageEl.textContent = `⏳ We're preparing for the next batch! Orders now will be delivered from ${formatDate(nextCycle.start)}. Thank you for your patience.`;
-
-  }
-
-
-  function countdown() {
-    const now = new Date();
-    const diff = cutoff - now;
-    if (diff <= 0) {
-      timerEl.textContent = "Order Cut-off passed! Next cycle starts soon.";
-      return;
+    let date = new Date(normYear, normMonth, 1);
+    let count = 0;
+    while (date.getMonth() === normMonth) {
+      if (date.getDay() === 6) { // Saturday
+        count++;
+        if (count === n) return new Date(date);
+      }
+      date.setDate(date.getDate() + 1);
     }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    timerEl.textContent = `Current order window closes in ${days} days ${hours} hours.`;
+    return null;
   }
 
-  countdown();
-  setInterval(countdown, 1000);
+  // helper to get month/year for offset (0 => current, 1 => next)
+  function monthYearOffset(offset) {
+    const d = new Date(currentYear, currentMonth + offset, 1);
+    return { y: d.getFullYear(), m: d.getMonth() };
+  }
+
+  const { y: yCurr, m: mCurr } = monthYearOffset(0);
+  const { y: yNext, m: mNext } = monthYearOffset(1);
+
+  let sat2 = nthSaturday(yCurr, mCurr, 2);
+  let sat4 = nthSaturday(yCurr, mCurr, 4);
+
+  const twoDaysMs = 2 * 24 * 60 * 60 * 1000;
+
+  // if null or too close (<= 2 days), roll to next month's corresponding saturday
+  if (!sat2 || ((sat2 - today) <= twoDaysMs)) sat2 = nthSaturday(yNext, mNext, 2);
+  if (!sat4 || ((sat4 - today) <= twoDaysMs)) sat4 = nthSaturday(yNext, mNext, 4);
+
+  return [sat2, sat4].filter(Boolean);
 }
 
-// Paystack
-function payWithPaystack() {
-  const name = document.getElementById("cust-name").value.trim();
-  const phone = document.getElementById("cust-phone").value.trim();
-  const location = document.getElementById("cust-location").value.trim();
-  const delivery = document.getElementById("cust-delivery").value;
-  const email = document.getElementById("cust-email").value.trim() || "customer@example.com";
-
-  if (!name || !phone || !location || !delivery) {
-    return alert("Please fill in all customer details.");
+function updateDeliveryBanner() {
+  const dates = getNextDeliveryDates();
+  const formatted = dates.map(d => d ? d.toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "");
+  const banner = document.getElementById("delivery-message");
+  if (!banner) return;
+  if (formatted.length === 0) {
+    banner.innerHTML = `We deliver farm produce to Lagos twice a month.<br><br>No delivery dates available at the moment.`;
+  } else {
+    banner.innerHTML = `
+      We deliver farm produce to Lagos twice a month.<br>
+      Order by <strong>midnight on the Thursday before,</strong> for delivery on:<br><br>
+      <strong>${formatted.join(" and ")}</strong>
+    `;
   }
+}
+
+// ----------- MODAL HANDLING -----------
+const modal = document.getElementById("deliveryModal");
+const modalInfo = document.getElementById("deliveryInfo");
+const proceedBtn = document.getElementById("proceedToPayBtn");
+const modalClose = document.querySelector(".modal .close");
+const payButton = document.getElementById("payButton");
+
+if (payButton) payButton.addEventListener("click", showDeliveryModal);
+
+function showDeliveryModal(e) {
+  if (e && typeof e.preventDefault === "function") e.preventDefault();
+  const nextDelivery = getNextDeliveryDates()[0];
+  const formattedDate = nextDelivery ? nextDelivery.toDateString() : "Next available cycle";
+
+  if (modalInfo) {
+    modalInfo.innerHTML = `
+      🗓️ <strong>Estimated Delivery:</strong><br>
+      <span style="font-size: 1.1em;">${formattedDate}</span><br><br>
+      Orders close by <strong>midnight on the Thursday before</strong> delivery.
+    `;
+  }
+
+  if (modal) modal.style.display = "flex";
+}
+
+if (modalClose) modalClose.onclick = () => (modal.style.display = "none");
+window.onclick = (e) => { if (modal && e.target === modal) modal.style.display = "none"; };
+
+const cancelModalBtn = document.getElementById("cancelModalBtn");
+if (cancelModalBtn) cancelModalBtn.addEventListener("click", () => { if (modal) modal.style.display = "none"; });
+
+if (proceedBtn) proceedBtn.addEventListener("click", () => {
+  if (modal) modal.style.display = "none";
+  payWithPaystack();
+});
+
+// ----------- PAYSTACK FLOW -----------
+function payWithPaystack() {
+  const nameEl = document.getElementById("cust-name");
+  const phoneEl = document.getElementById("cust-phone");
+  const locationEl = document.getElementById("cust-location");
+  const emailEl = document.getElementById("cust-email");
+
+  const name = nameEl ? nameEl.value.trim() : "";
+  const phone = phoneEl ? phoneEl.value.trim() : "";
+  const location = locationEl ? locationEl.value.trim() : "";
+  const email = (emailEl ? emailEl.value.trim() : "") || "customer@example.com";
+
+  if (!name || !phone || !location) return alert("Please fill in all customer details.");
 
   let totalAmount = 0;
   const items = Object.keys(cart)
     .filter(id => cart[id] > 0)
     .map(id => {
       const prod = products.find(p => p.id === id);
-      const subtotal = cart[id] * prod.price;
+      const subtotal = prod ? (cart[id] * prod.price) : 0;
       totalAmount += subtotal;
-      return `${prod.name} x${cart[id]} (₦${subtotal})`;
+      return { name: prod ? prod.name : "Unknown", price: prod ? prod.price : 0, quantity: cart[id], subtotal };
     });
 
-  if (totalAmount === 0) {
-    return alert("Your cart is empty.");
-  }
+  if (totalAmount === 0) return alert("Your cart is empty.");
 
-  let deliveryFee = 0;
-  if (delivery.toLowerCase().includes("standard")) {
-    deliveryFee = 2500;
-  } else if (delivery.toLowerCase().includes("express")) {
-    deliveryFee = 5000;
-  }
-
+  const deliveryFee = deliveryWaived ? 0 : STANDARD_DELIVERY_FEE;
   const totalPayable = totalAmount + deliveryFee;
-  const summary = items.join("; ");
-  const batchInfo = getCurrentCycle().cycle;
 
+  const nextDelivery = getNextDeliveryDates()[0];
+  const deliveryDate = nextDelivery ? formatDate(nextDelivery) : "";
+
+  // Paystack handler
   const handler = PaystackPop.setup({
     key: "pk_test_93fb0a0817cffc7772f7084f3c388fda026c98f9",
     email: email,
-    amount: totalPayable * 100,
+    amount: Math.round(totalPayable * 100), // kobo
     currency: "NGN",
     ref: "FARM" + Math.floor(Math.random() * 1000000000),
     metadata: {
       custom_fields: [
-        { display_name: "Full Name", variable_name: "full_name", value: name },
-        { display_name: "Phone Number", variable_name: "phone", value: phone },
-        { display_name: "Delivery Location", variable_name: "location", value: location },
-        { display_name: "Delivery Type", variable_name: "delivery", value: delivery },
-        { display_name: "Order Summary", variable_name: "order_summary", value: summary }
+        { display_name: "Full Name", value: name },
+        { display_name: "Phone", value: phone },
+        { display_name: "Delivery Location", value: location },
+        { display_name: "Delivery Type", value: "Standard Delivery" }
       ]
     },
     callback: function (response) {
+      // Save order to SheetDB
+      const payload = {
+        data: [{
+          Name: name,
+          Phone: phone,
+          Location: location,
+          Delivery: "Standard Delivery",
+          Order: items.map(i => `${i.name} x${i.quantity}`).join("; "),
+          Total: totalPayable,
+          DeliveryRange: deliveryDate,
+          Reference: response.reference,
+          Email: email
+        }]
+      };
+
       fetch(ORDERS_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          data: [{
-            Name: name,
-            Phone: phone,
-            Location: location,
-            Delivery: delivery,
-            Order: summary,
-            Total: totalAmount,
-            BatchID: batchInfo.batch,
-            DeliveryRange: `${formatDate(batchInfo.start)} - ${formatDate(batchInfo.end)}`,
-            Reference: response.reference,
-            Email: email
-          }]
-        })
+        body: JSON.stringify(payload)
       })
         .then(res => res.json())
         .then(result => {
-          if (result.created > 0) {
-            showModal();
+          // SheetDB v2 returns an array, or { created: 1 } in some cases. Check a few shapes.
+          const createdCount = (result && (result.created || result.created_count || (Array.isArray(result) ? result.length : 0))) || 0;
+          if (createdCount > 0) {
+            const customer = { name, phone, email };
+            const totals = { subtotal: totalAmount, total: totalPayable };
+            showReceipt(customer, items, totals, response.reference);
 
-            // Reset cart quantities and UI
-            Object.keys(cart).forEach(id => {
-              cart[id] = 0;
-              document.getElementById(`qty-${id}`).innerText = "0";
-            });
-
-            // Clear delivery selection and other inputs
-            document.getElementById("cust-delivery").value = "";
-            document.getElementById("cust-name").value = "";
-            document.getElementById("cust-phone").value = "";
-            document.getElementById("cust-location").value = "";
-            document.getElementById("cust-email").value = "";
-
-            // Re-render cart summary (subtotal, delivery fee, total)
+            // reset cart and UI
+            Object.keys(cart).forEach(id => { cart[id] = 0; const el = document.getElementById(`qty-${id}`); if (el) el.innerText = "0"; });
+            [nameEl, phoneEl, locationEl, emailEl].forEach(i => { if (i) i.value = ""; });
             renderCart();
           } else {
+            console.warn("Order save response:", result);
             alert("❌ Payment succeeded, but order not saved.");
-            console.error(result);
           }
         })
-        .catch(error => {
+        .catch(err => {
+          console.error("Error saving order:", err);
           alert("⚠️ Payment succeeded, but error saving order.");
-          console.error(error);
         });
     },
-    onClose: function () {
-      alert("❌ Payment window closed.");
-    }
+    onClose: function () { alert("❌ Payment window closed."); }
   });
-
   handler.openIframe();
 }
 
-// Modal
-function showModal() {
-  document.getElementById("success-modal").classList.remove("hidden");
+// ----------- RECEIPT MODAL (FIXED) -----------
+
+function showReceipt(customer, cartItems, totals, reference) {
+  const rName = document.getElementById("receiptName");
+  const rSubtotal = document.getElementById("receiptSubtotal");
+  const rTotal = document.getElementById("receiptTotal");
+  const rRef = document.getElementById("receiptRef");
+  const itemsList = document.getElementById("receiptItems");
+  const receiptModal = document.getElementById("receiptModal");
+
+  console.log("🧾 Showing receipt:", { customer, cartItems, totals, reference });
+
+  // Fill in receipt content
+  if (rName) rName.textContent = customer.name || "Valued Customer";
+  if (rSubtotal) rSubtotal.textContent = `₦${totals.subtotal.toLocaleString()}`;
+  if (rTotal) rTotal.textContent = `₦${totals.total.toLocaleString()}`;
+  if (rRef) rRef.textContent = reference || "N/A";
+
+  // List of items
+  if (itemsList) {
+    itemsList.innerHTML = "";
+    cartItems.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = `${item.name} × ${item.quantity} — ₦${item.subtotal.toLocaleString()}`;
+      itemsList.appendChild(li);
+    });
+  }
+
+  // ✅ Properly show the modal (fixes blank issue)
+  if (receiptModal) {
+    receiptModal.classList.remove("hidden"); // remove CSS that hides it
+    receiptModal.style.display = "flex";     // trigger flex centering
+  }
+
+  // Optional: Scroll to top
+  window.scrollTo(0, 0);
 }
 
-function closeModal() {
-  document.getElementById("success-modal").classList.add("hidden");
+function closeReceiptModal() {
+  const receiptModal = document.getElementById("receiptModal");
+  if (receiptModal) {
+    receiptModal.classList.add("hidden");
+    receiptModal.style.display = "none";
+  }
 }
+
+// ----------- PDF DOWNLOAD -----------
+
+const downloadReceiptBtn = document.getElementById("downloadReceiptBtn");
+if (downloadReceiptBtn) {
+  downloadReceiptBtn.addEventListener("click", () => {
+    const receipt = document.getElementById("receiptContent");
+    if (!receipt) return alert("No receipt content found.");
+
+    const opt = {
+      margin: 0.5,
+      filename: `Farmly-Receipt-${new Date().toISOString().split('T')[0]}.pdf`,
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    };
+
+    // ✅ Temporarily hide download and close buttons before export
+    const btns = receipt.querySelectorAll("#downloadReceiptBtn, .modal-close-btn");
+    btns.forEach(b => b.style.display = "none");
+
+    setTimeout(() => {
+      html2pdf().set(opt).from(receipt).save().then(() => {
+        // restore buttons after save
+        btns.forEach(b => b.style.display = "");
+      });
+    }, 300);
+  });
+}
+
+// Success Modal helpers
+function showModal() { const el = document.getElementById("success-modal"); if (el) el.classList.remove("hidden"); }
+function closeModal() { const el = document.getElementById("success-modal"); if (el) el.classList.add("hidden"); }
 
 // Init
 document.addEventListener("DOMContentLoaded", () => {
   fetchProducts();
-  updateDeliveryInfo();
+  updateDeliveryBanner();
+  renderCart();
 
-  const deliverySelect = document.getElementById("cust-delivery");
-  if (deliverySelect) {
-    deliverySelect.addEventListener("change", renderCart);
-  }
-
-  const startOrderBtn = document.querySelector(".start-order");
-  if (startOrderBtn && document.getElementById("checkout-section")) {
-    startOrderBtn.addEventListener("click", () => {
-      document.getElementById("checkout-section").scrollIntoView({ behavior: "smooth" });
-    });
-
-    document.getElementById("menu-toggle").addEventListener("click", () => {
-      document.getElementById("nav-menu").classList.toggle("show");
-    });
-
-    document.addEventListener("click", e => {
-      const menu = document.getElementById("nav-menu");
-      const btn = document.getElementById("menu-toggle");
-      if (!menu.contains(e.target) && !btn.contains(e.target)) {
-        menu.classList.remove("show");
+  // menu toggle
+  const menuToggle = document.getElementById("menu-toggle");
+  const navMenu = document.getElementById("nav-menu");
+  if (menuToggle && navMenu) {
+    menuToggle.addEventListener("click", () => navMenu.classList.toggle("show"));
+    document.addEventListener("click", (e) => {
+      if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+        navMenu.classList.remove("show");
       }
     });
   }

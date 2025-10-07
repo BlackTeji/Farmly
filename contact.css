@@ -150,16 +150,32 @@ ul {
 
 /* Footer */
 .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     background-color: #2a4d3c;
     color: white;
     text-align: center;
-    padding: 2.5rem 1rem;
-    font-size: 1.2rem;
-    margin-top: auto;
+    font-size: 0.85rem;
+    line-height: 1;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+    margin: 0 !important;
+    z-index: 999;
 }
 
 .footer p {
+    margin: 0 !important;
+    padding: 0.3rem 0.5rem !important;
     color: white;
+}
+
+.page-wrapper {
+    padding-bottom: 50px;
 }
 
 /* Gradient Animation */
