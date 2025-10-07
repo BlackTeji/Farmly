@@ -4,7 +4,7 @@ const ORDERS_URL = "https://sheetdb.io/api/v1/ps7igjn24dxxe?sheet=Orders";
 let products = [];
 const cart = {};
 
-const STANDARD_DELIVERY_FEE = 5000;
+const STANDARD_DELIVERY_FEE = 1500;
 // NOTE: keep true if you want delivery fee waived by default; set false to charge.
 let deliveryWaived = true;
 
@@ -406,30 +406,57 @@ function closeReceiptModal() {
 
 // ----------- PDF DOWNLOAD -----------
 
+// ----------- PDF DOWNLOAD (MOBILE-FRIENDLY) -----------
+
 const downloadReceiptBtn = document.getElementById("downloadReceiptBtn");
+
 if (downloadReceiptBtn) {
   downloadReceiptBtn.addEventListener("click", () => {
+    const receiptModal = document.getElementById("receiptModal");
     const receipt = document.getElementById("receiptContent");
     if (!receipt) return alert("No receipt content found.");
 
-    const opt = {
-      margin: 0.5,
-      filename: `Farmly-Receipt-${new Date().toISOString().split('T')[0]}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-    };
+    // ✅ Ensure modal is visible for mobile (html2pdf can't see hidden elements)
+    receiptModal.classList.remove("hidden");
+    receiptModal.style.display = "flex";
+    receiptModal.scrollTop = 0;
+    document.body.scrollTop = 0;
 
-    // ✅ Temporarily hide download and close buttons before export
+    // Hide close & download buttons inside the PDF
     const btns = receipt.querySelectorAll("#downloadReceiptBtn, .modal-close-btn");
-    btns.forEach(b => b.style.display = "none");
+    btns.forEach(b => (b.style.display = "none"));
 
+    // Wait for rendering to stabilize before snapshot
     setTimeout(() => {
-      html2pdf().set(opt).from(receipt).save().then(() => {
-        // restore buttons after save
-        btns.forEach(b => b.style.display = "");
-      });
-    }, 300);
+      const opt = {
+        margin: 0.3,
+        filename: `Farmly-Receipt-${new Date().toISOString().split("T")[0]}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: {
+          scale: window.innerWidth < 768 ? 3 : 2, // higher scale for mobile
+          useCORS: true,
+          scrollY: 0,
+          windowWidth: document.documentElement.scrollWidth,
+          backgroundColor: "#ffffff"
+        },
+        jsPDF: { unit: "in", format: "a5", orientation: "portrait" }
+      };
+
+      html2pdf()
+        .set(opt)
+        .from(receipt)
+        .save()
+        .then(() => {
+          // Restore buttons & hide modal again
+          btns.forEach(b => (b.style.display = ""));
+          receiptModal.style.display = "none";
+          receiptModal.classList.add("hidden");
+        })
+        .catch(err => {
+          console.error("PDF generation failed:", err);
+          alert("⚠️ Could not generate receipt PDF. Please try again.");
+        });
+    }, 500);
   });
 }
 

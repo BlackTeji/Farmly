@@ -243,4 +243,18 @@ ul {
         font-size: 0.8rem;
         padding: 0.5rem 1rem;
     }
+
+    /* Center checkout button on mobile */
+    .customer-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .checkout-btn {
+        width: auto;
+        align-self: center;
+        text-align: center;
+    }
+
 }
