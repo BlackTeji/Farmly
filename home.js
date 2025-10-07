@@ -1,3 +1,6 @@
+// =========================
+// FARM FACTS & BRAND INSIGHTS
+// =========================
 const agriNutriFacts = [
     "Yam is Nigeria’s most cultivated tuber crop and rich in fiber and antioxidants.",
     "Cassava provides carbohydrates and resistant starch to support gut health.",
@@ -8,16 +11,7 @@ const agriNutriFacts = [
     "Tomatoes are a source of lycopene, which may reduce the risk of heart disease.",
     "Peppers are high in vitamin A and antioxidants for vision and immune support.",
     "Beans are protein-rich legumes that also aid in healthy digestion.",
-    "Groundnuts (peanuts) provide protein and healthy fats for sustained energy.",
-    "Citrus fruits like oranges and lemons boost immunity with vitamin C.",
-    "Locally sourced produce contains more nutrients than imported options.",
-    "Seasonal fruits and vegetables are naturally more nutrient-dense.",
-    "Supporting local farms reduces food miles and carbon footprint.",
-    "Farmly’s fresh produce is harvested at peak ripeness for maximum flavor and nutrition.",
-    "Eating a variety of tubers, fruits, and vegetables helps maintain balanced nutrition.",
-    "Yams and plantains are excellent energy sources for active lifestyles.",
-    "Root crops like cassava and sweet potato provide essential complex carbohydrates.",
-    "Leafy greens from local farms retain more minerals and vitamins than long-stored imports."
+    "Groundnuts (peanuts) provide protein and healthy fats for sustained energy."
 ];
 
 const brandInsights = [
@@ -29,41 +23,37 @@ const brandInsights = [
     "Curate your order exactly the way you want — choose the quantity and types of fresh produce you need."
 ];
 
-// Separate indexes for smoother rotation
+// =========================
+// ROTATION LOGIC
+// =========================
 let agriIndex = 0;
 let brandIndex = 0;
 let autoRotateInterval;
 
-function updateFact(elementId, text) {
+function updateFact(elementId, text, dotContainerSelector, index, total) {
     const el = document.getElementById(elementId);
+    const dots = document.querySelectorAll(`${dotContainerSelector} .dot`);
+
     el.style.opacity = 0;
+
     setTimeout(() => {
         el.textContent = text;
         el.style.opacity = 1;
-    }, 300); // fade transition
+
+        // Update dots
+        dots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === (index % total));
+        });
+    }, 300);
 }
 
 function rotateFacts() {
-    updateFact("agri-nutri-fact", agriNutriFacts[agriIndex % agriNutriFacts.length]);
-    updateFact("brand-fact", brandInsights[brandIndex % brandInsights.length]);
+    updateFact("agri-nutri-fact", agriNutriFacts[agriIndex % agriNutriFacts.length], ".fact-carousel .carousel-dots", agriIndex, agriNutriFacts.length);
+    updateFact("brand-fact", brandInsights[brandIndex % brandInsights.length], ".brand-carousel .carousel-dots", brandIndex, brandInsights.length);
     agriIndex++;
     brandIndex++;
 }
 
-// Manual navigation
-function showNextFact() {
-    rotateFacts();
-    resetAutoRotate();
-}
-
-function showPrevFact() {
-    agriIndex = (agriIndex - 2 + agriNutriFacts.length) % agriNutriFacts.length;
-    brandIndex = (brandIndex - 2 + brandInsights.length) % brandInsights.length;
-    rotateFacts();
-    resetAutoRotate();
-}
-
-// Auto-rotate with reset
 function startAutoRotate() {
     autoRotateInterval = setInterval(rotateFacts, 8000);
 }
@@ -73,53 +63,31 @@ function resetAutoRotate() {
     startAutoRotate();
 }
 
+// =========================
+// NAVIGATION & MENU
+// =========================
 document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.getElementById("menu-toggle");
     const navMenu = document.getElementById("nav-menu");
 
-    // Toggle navigation visibility
+    // Mobile menu toggle
     menuToggle.addEventListener("click", () => {
         navMenu.classList.toggle("show");
     });
 
-    // Close nav when clicking outside
+    // Close nav on outside click
     document.addEventListener("click", (e) => {
         if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
             navMenu.classList.remove("show");
         }
     });
 
-    // Prevent default anchor
+    // Prevent default anchors
     document.querySelectorAll('a[href="#"]').forEach(link => {
         link.addEventListener('click', e => e.preventDefault());
     });
 
-    // Initial rotation
+    // Initial setup
     rotateFacts();
     startAutoRotate();
-
-    // Swipe support for mobile
-    let touchStartX = 0;
-    let touchEndX = 0;
-    const carouselElements = document.querySelectorAll("#agri-nutri-fact, #brand-fact");
-
-    carouselElements.forEach(el => {
-        el.addEventListener("touchstart", (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        el.addEventListener("touchend", (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipeGesture();
-        });
-    });
-
-    function handleSwipeGesture() {
-        const swipeDistance = touchEndX - touchStartX;
-        if (swipeDistance > 50) {
-            showPrevFact();
-        } else if (swipeDistance < -50) {
-            showNextFact();
-        }
-    }
 });

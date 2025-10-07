@@ -4,10 +4,47 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Farmly - Fresh Farm Food</title>
+
+    <title>Farmly – Fresh Farm Food Delivered from Local Farmers in Nigeria</title>
+
+    <meta name="description"
+        content="Order fresh farm produce—yam, garri, palm oil, plantain, and more—directly from local Nigerian farmers. Farmly delivers to Lagos twice a month. Fresh, affordable, and convenient." />
+
+    <meta name="keywords"
+        content="Farmly, fresh food delivery Nigeria, farm produce Lagos, buy yam online, cassava, garri, palm oil, plantain, local farmers" />
+
+    <meta name="author" content="Farmly" />
+
+    <link rel="canonical" href="https://myfarmly.shop/" />
+
     <link rel="stylesheet" href="home.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display&display=swap"
         rel="stylesheet" />
+
+    <meta property="og:title" content="Farmly – Fresh Farm Food from Local Farmers" />
+    <meta property="og:description"
+        content="Order fresh yam, garri, and palm oil straight from Nigerian farms to Lagos." />
+    <meta property="og:image" content="https://myfarmly.shop/logo.png" />
+    <meta property="og:url" content="https://myfarmly.shop/" />
+    <meta property="og:type" content="website" />
+
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Farmly",
+    "url": "https://myfarmly.shop",
+    "logo": "https://myfarmly.shop/logo.png",
+    "description": "Farmly connects Nigerian farmers to customers seeking fresh produce delivered to Lagos every two weeks.",
+   <!--
+"sameAs": [
+  "https://www.instagram.com/farmly.ng",
+  "https://www.facebook.com/farmlyng"
+]
+-->
+
+  }
+  </script>
 </head>
 
 <body>
@@ -24,7 +61,7 @@
             </nav>
         </header>
 
-        <!-- Hero Section -->
+        <!-- Hero Section (with nested Did You Know section) -->
         <section class="hero hero-wrapper">
             <h1 class="fade-in-up">Fresh farm food<br>for your family</h1>
             <a href="shop.html" class="start-order fade-in-up">Start Your Order</a>
@@ -34,14 +71,24 @@
                 <div class="fact-carousel">
                     <h2>Did You Know?</h2>
                     <p id="agri-nutri-fact">Loading fact...</p>
+                    <div class="carousel-dots">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                    </div>
                 </div>
+
                 <div class="brand-carousel">
                     <h2>Farmly Insight</h2>
                     <p id="brand-fact">Loading insight...</p>
+                    <div class="carousel-dots">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                    </div>
                 </div>
             </section>
 
-    </div> 
+        </section>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
