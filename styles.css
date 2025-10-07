@@ -27,8 +27,7 @@ body {
     background-size: 400% 400%;
     animation: gradientFlow 20s ease infinite;
     color: #2a4d3c;
-    padding-top: 120px;
-    /* aligns with header height */
+    padding-top: 100px;
     padding-bottom: 80px;
 }
 
@@ -119,12 +118,13 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
-    margin: auto;
+    margin: 0 auto;
     padding: 1rem;
     max-width: 1100px;
 }
+
 
 /* Delivery Info Section */
 *.delivery-info {
@@ -136,6 +136,32 @@ body {
     max-width: 700px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     color: #2a4d3c;
+}
+
+#delivery-info-box {
+    max-width: 400px;
+    margin: 0.8rem auto 1rem;
+    margin-top: 120px;
+    padding: 10px 18px;
+    background-color: #faf6ea;
+    border-left: 4px solid #99b99a;
+    border-radius: 10px;
+    text-align: center;
+    color: #2a4d3c;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    animation: fadeInUp 1.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .delivery-message {
@@ -198,29 +224,6 @@ body {
     font-size: 0.85rem;
     color: #555;
 }
-
-
-/*@keyframes slide-left {
-0% {
-    transform: translateX(100%);
-}
-
-100% {
-    transform: translateX(-350%);
-}
-}
-
-.sliding-box h2,
-.sliding-box p {
-    animation: slide-left 20s linear infinite;
-    will-change: transform;
-}
-
-.sliding-box:hover h2,
-.sliding-box:hover p {
-    animation-play-state: paused;
-}*/
-
 
 .product-grid {
     flex: 1 1 65%;
@@ -441,7 +444,6 @@ body {
     backdrop-filter: blur(6px);
 }
 
-/* Delivery Modal – Compact Centered Card */
 #deliveryModal .modal-content {
     background: white;
     padding: 1.8rem 1.5rem;
@@ -454,7 +456,7 @@ body {
     position: relative;
 }
 
-/* Subtle pop animation */
+/* Pop animation */
 @keyframes popIn {
     from {
         transform: scale(0.5);
@@ -466,7 +468,6 @@ body {
         opacity: 1;
     }
 }
-
 
 .modal-content h2 {
     margin-top: 0;
@@ -558,7 +559,7 @@ body {
     display: flex;
 }
 
-/* --- RECEIPT STYLING UPGRADE --- */
+/* --- RECEIPT STYLING --- */
 
 #receiptContent {
     background: #ffffff;
@@ -581,7 +582,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* Centralize all text and make it neat */
 #receiptContent p,
 #receiptContent ul,
 #receiptContent li {
@@ -591,7 +591,6 @@ body {
     font-size: 1rem;
 }
 
-/* Add a subtle divider for professionalism */
 #receiptContent hr {
     border: none;
     border-top: 1px dashed #ccc;
@@ -599,7 +598,6 @@ body {
     width: 80%;
 }
 
-/* Improve item list spacing */
 .receipt-item-list {
     list-style: none;
     padding: 0;
@@ -612,14 +610,12 @@ body {
     font-size: 1rem;
 }
 
-/* Add spacing to total row */
 #receiptContent .total-row {
     font-weight: 600;
     font-size: 1.1rem;
     margin-top: 1rem;
 }
 
-/* Enhance download button */
 #downloadReceiptBtn {
     background: #2a4d3c;
     color: #fff;
@@ -637,7 +633,6 @@ body {
     transform: scale(1.03);
 }
 
-/* Hide download button and close icon when printing or downloading */
 @media print {
 
     #downloadReceiptBtn,
@@ -645,7 +640,6 @@ body {
         display: none !important;
     }
 
-    /* Make the receipt fit nicely on A5 or half page */
     #receiptContent {
         box-shadow: none;
         border: none;
@@ -672,7 +666,6 @@ body {
         transform: scale(1);
     }
 }
-
 
 .hidden {
     display: none;
@@ -838,15 +831,21 @@ ul li {
     }
 }
 
-/* Smaller Delivery Info Box for Mobile */
 @media (max-width: 767px) {
     #delivery-info-box {
-        max-width: 90%;
+        max-width: 70%;
         padding: 8px 12px;
         border-left-width: 3px;
         border-radius: 8px;
         margin: 0.5rem auto 1rem auto;
     }
+
+    @media (min-width: 768px) {
+        #delivery-info-box {
+            margin-top: 120px;
+        }
+    }
+
 
     #delivery-info-box h2 {
         font-size: 1rem;
@@ -862,7 +861,7 @@ ul li {
 
 /* Delivery Info Box */
 #delivery-info-box {
-    max-width: 600px;
+    max-width: 400px;
     margin: 0.5rem auto 1.5rem auto;
     padding: 12px 18px;
     background-color: #faf6ea;
@@ -893,4 +892,37 @@ ul li {
     font-size: 0.8rem;
     color: #3a6953;
     margin: 0;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.animate-slide-in {
+    animation: slideIn 0.2s ease-out forwards;
+}
+
+/* Fade-in upward for delivery info box */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.2s ease-out forwards;
 }

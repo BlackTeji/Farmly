@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Contact form submission handler
+    // Contact form submission handler with EmailJS
     const form = document.getElementById("contact-form");
     const response = document.getElementById("form-response");
 
@@ -22,9 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
         form.addEventListener("submit", function (e) {
             e.preventDefault();
 
-            response.style.display = "block";
-            response.textContent = "Message sent successfully!";
-            form.reset();
+            // Send form via EmailJS
+            emailjs.sendForm('service_uwuodx9', 'template_tw7t3pe', this, 'z9QvwJnX_tBVswAFy')
+                .then(() => {
+                    response.style.display = "block";
+                    response.textContent = "Message sent successfully!";
+                    form.reset();
+                }, (err) => {
+                    response.style.display = "block";
+                    response.textContent = "Failed to send message. Please try again later.";
+                    console.error("EmailJS error:", err);
+                });
         });
     }
 });
