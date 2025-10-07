@@ -34,6 +34,8 @@ function updateFact(elementId, text, dotContainerSelector, index, total) {
     const el = document.getElementById(elementId);
     const dots = document.querySelectorAll(`${dotContainerSelector} .dot`);
 
+    if (!el) return;
+
     el.style.opacity = 0;
 
     setTimeout(() => {
@@ -48,8 +50,20 @@ function updateFact(elementId, text, dotContainerSelector, index, total) {
 }
 
 function rotateFacts() {
-    updateFact("agri-nutri-fact", agriNutriFacts[agriIndex % agriNutriFacts.length], ".fact-carousel .carousel-dots", agriIndex, agriNutriFacts.length);
-    updateFact("brand-fact", brandInsights[brandIndex % brandInsights.length], ".brand-carousel .carousel-dots", brandIndex, brandInsights.length);
+    updateFact(
+        "agri-nutri-fact",
+        agriNutriFacts[agriIndex % agriNutriFacts.length],
+        ".fact-carousel .carousel-dots",
+        agriIndex,
+        agriNutriFacts.length
+    );
+    updateFact(
+        "brand-fact",
+        brandInsights[brandIndex % brandInsights.length],
+        ".brand-carousel .carousel-dots",
+        brandIndex,
+        brandInsights.length
+    );
     agriIndex++;
     brandIndex++;
 }
@@ -64,6 +78,50 @@ function resetAutoRotate() {
 }
 
 // =========================
+// SWIPE HANDLING
+// =========================
+function enableSwipe(elementId, factsArray, indexRef, dotSelector, totalFacts) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+
+    let startX = 0;
+    let endX = 0;
+
+    el.addEventListener("touchstart", (e) => {
+        startX = e.changedTouches[0].screenX;
+    });
+
+    el.addEventListener("touchend", (e) => {
+        endX = e.changedTouches[0].screenX;
+        const diff = startX - endX;
+
+        // Only trigger swipe if movement is significant
+        if (Math.abs(diff) > 40) {
+            if (diff > 0) {
+                // Swipe left → next
+                if (elementId === "agri-nutri-fact") agriIndex++;
+                else brandIndex++;
+            } else {
+                // Swipe right → previous
+                if (elementId === "agri-nutri-fact") agriIndex--;
+                else brandIndex--;
+            }
+
+            // Wrap around index
+            if (elementId === "agri-nutri-fact") {
+                if (agriIndex < 0) agriIndex = agriNutriFacts.length - 1;
+                updateFact(elementId, agriNutriFacts[agriIndex % agriNutriFacts.length], dotSelector, agriIndex, totalFacts);
+            } else {
+                if (brandIndex < 0) brandIndex = brandInsights.length - 1;
+                updateFact(elementId, brandInsights[brandIndex % brandInsights.length], dotSelector, brandIndex, totalFacts);
+            }
+
+            resetAutoRotate();
+        }
+    });
+}
+
+// =========================
 // NAVIGATION & MENU
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
@@ -75,19 +133,23 @@ document.addEventListener("DOMContentLoaded", () => {
         navMenu.classList.toggle("show");
     });
 
-    // Close nav on outside click
+    // Close nav when clicking outside
     document.addEventListener("click", (e) => {
         if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
             navMenu.classList.remove("show");
         }
     });
 
-    // Prevent default anchors
+    // Prevent default on #
     document.querySelectorAll('a[href="#"]').forEach(link => {
-        link.addEventListener('click', e => e.preventDefault());
+        link.addEventListener("click", (e) => e.preventDefault());
     });
 
-    // Initial setup
+    // Initialize carousels
     rotateFacts();
     startAutoRotate();
+
+    // Enable swipe gestures
+    enableSwipe("agri-nutri-fact", agriNutriFacts, "agriIndex", ".fact-carousel .carousel-dots", agriNutriFacts.length);
+    enableSwipe("brand-fact", brandInsights, "brandIndex", ".brand-carousel .carousel-dots", brandInsights.length);
 });
