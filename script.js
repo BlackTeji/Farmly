@@ -105,8 +105,12 @@ function renderCart() {
 
   const deliveryFee = deliveryWaived ? 0 : STANDARD_DELIVERY_FEE;
   deliveryDisplay.innerHTML = deliveryWaived
-    ? `<s>₦${STANDARD_DELIVERY_FEE.toLocaleString()}</s> (Waived)`
+    ? `<div class="waived-fee">
+       <s>₦${STANDARD_DELIVERY_FEE.toLocaleString()}</s>
+       <span class="waived-note">(Waived)</span>
+     </div>`
     : `₦${STANDARD_DELIVERY_FEE.toLocaleString()}`;
+
   totalDisplay.textContent = `₦${(subtotal + deliveryFee).toLocaleString()}`;
 }
 
