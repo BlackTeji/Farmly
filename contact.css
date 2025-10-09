@@ -178,7 +178,6 @@ ul {
     padding-bottom: 50px;
 }
 
-/* Gradient Animation */
 @keyframes gradientFlow {
     0% {
         background-position: 0% 50%;
@@ -244,7 +243,6 @@ ul {
         padding: 0.5rem 1rem;
     }
 
-    /* Center checkout button on mobile */
     .customer-form {
         display: flex;
         flex-direction: column;

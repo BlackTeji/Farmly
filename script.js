@@ -113,29 +113,46 @@ function renderCart() {
 // ---------- Delivery Dates ----------
 function getNextDeliveryDates() {
   const today = new Date();
-  const nthSaturday = (y, m, n) => {
-    const date = new Date(y, m, 1);
+
+  // Helper to find the nth Saturday of a given month
+  const nthSaturday = (year, month, n) => {
+    const date = new Date(year, month, 1);
     let count = 0;
-    while (date.getMonth() === m) {
-      if (date.getDay() === 6 && ++count === n) return new Date(date);
+    while (date.getMonth() === month) {
+      if (date.getDay() === 6) count++;
+      if (count === n) return new Date(date);
       date.setDate(date.getDate() + 1);
     }
     return null;
   };
 
+  // Get this month's 2nd and 4th Saturdays
+  const currentMonthDates = [2, 4].map(n => nthSaturday(today.getFullYear(), today.getMonth(), n));
+
+  // Get next month's 2nd and 4th Saturdays
   const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-  const sats = [2, 4].map(n => nthSaturday(today.getFullYear(), today.getMonth(), n));
-  const valid = sats.filter(d => d && d - today > 2 * 86400000);
-  return valid.length ? valid : [nthSaturday(nextMonth.getFullYear(), nextMonth.getMonth(), 2), nthSaturday(nextMonth.getFullYear(), nextMonth.getMonth(), 4)];
+  const nextMonthDates = [2, 4].map(n => nthSaturday(nextMonth.getFullYear(), nextMonth.getMonth(), n));
+
+  // Combine and filter only dates that are at least 3 days from now
+  const allDates = [...currentMonthDates, ...nextMonthDates].filter(d => d && d - today > 2 * 86400000);
+
+  // Return the next two upcoming dates
+  return allDates.slice(0, 2);
 }
 
 function updateDeliveryBanner() {
   const banner = document.getElementById("delivery-message");
   if (!banner) return;
-  const dates = getNextDeliveryDates().map(d => d.toLocaleDateString("en-US", { month: "short", day: "numeric" }));
+
+  const dates = getNextDeliveryDates().map(d =>
+    d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+  );
+
   banner.innerHTML = dates.length
-    ? `We deliver farm produce to Lagos twice a month.<br>Order by <strong>midnight on the Thursday before</strong> for delivery on:<br><br><strong>${dates.join(" and ")}</strong>`
-    : `We deliver farm produce to Lagos twice a month.<br><br>No delivery dates available at the moment.`;
+    ? `Next Lagos delivery: ${dates.join(" // ")}<br><br>
+       Order closes Tuesday midnight before delivery date.`
+    : `We deliver farm produce to Lagos twice a month.<br><br>
+       No delivery dates available at the moment.`;
 }
 
 // ---------- Modal ----------
@@ -155,7 +172,7 @@ function showDeliveryModal(e) {
     modalInfo.innerHTML = `
       🗓️ <strong>Estimated Delivery:</strong><br>
       <span style="font-size:1.1em;">${nextDelivery ? nextDelivery.toDateString() : "Next available cycle"}</span><br><br>
-      Orders close by <strong>midnight on the Thursday before</strong> delivery.
+      Orders close by <strong>midnight on the Tuesday before</strong> delivery.
     `;
   }
   if (modal) modal.style.display = "flex";
@@ -220,9 +237,18 @@ function saveOrder(name, phone, location, email, deliveryDate, items, subtotal, 
     .then(res => res.json())
     .then(res => {
       if (res.created || res.created_count || Array.isArray(res)) {
+
+        closeModal();
+
         showReceipt({ name }, items, { subtotal, total: totalPayable }, reference);
         Object.keys(cart).forEach(id => (cart[id] = 0));
         renderProducts(); renderCart();
+
+        document.getElementById("cust-name").value = "";
+        document.getElementById("cust-phone").value = "";
+        document.getElementById("cust-location").value = "";
+        document.getElementById("cust-email").value = "";
+
       } else alert("❌ Payment succeeded, but order not saved.");
     })
     .catch(err => {
@@ -284,7 +310,6 @@ document.getElementById("downloadReceiptBtn")?.addEventListener("click", () => {
   }, 500);
 });
 
-// ---------- Initialize ----------
 document.addEventListener("DOMContentLoaded", () => {
   fetchProducts();
   updateDeliveryBanner();
@@ -302,10 +327,10 @@ document.addEventListener("DOMContentLoaded", () => {
     navMenu.classList.toggle("show");
   });
 
-    // Close nav when clicking outside
-    document.addEventListener("click", (e) => {
-      if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
-        navMenu.classList.remove("show");
-      }
-    });
+  // Close nav when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+      navMenu.classList.remove("show");
+    }
   });
+});

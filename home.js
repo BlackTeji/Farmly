@@ -16,11 +16,11 @@ const agriNutriFacts = [
 
 const brandInsights = [
     "Receive fresh, chemical-free produce delivered to Lagos twice a month. Order before Thursday cutoff for on-time delivery.",
-    "We offer two flexible delivery options: Express and Standard, each at their own costs.",
+    "We offer a standard delivery option to ensure your produce arrives fresh and on time, at the cost of 1500 NGN per delivery.",
     "We empower Delta State farmers by offering fair pricing and pre-order access to their fresh harvests.",
     "All our farm produce is grown naturally, without synthetic chemicals, ensuring the freshest and healthiest options.",
-    "Farmly connects Lagos residents with Delta farms, bringing fresh, natural produce straight to your door while supporting local farmers.",
-    "Curate your order exactly the way you want — choose the quantity and types of fresh produce you need."
+    "Farmly connects urban cities with Delta farms, bringing fresh, natural produce straight to your door while supporting local farmers.",
+    "Curate your order exactly the way you want; choose the quantity and types of fresh produce you need."
 ];
 
 // =========================

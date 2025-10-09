@@ -16,7 +16,9 @@
     <div class="page-wrapper">
         <!-- HEADER -->
         <header class="header">
-            <img src="logo.png" alt="Farmly Logo" class="logo" />
+            <a href="index.html">
+                <img src="logo.png" alt="Farmly Logo" class="logo" />
+            </a>
             <div class="menu-toggle" id="menu-toggle">☰</div>
             <nav class="nav-menu" id="nav-menu">
                 <a href="index.html">Home</a>
@@ -88,56 +90,59 @@
         </div>
     </div>
 
-    <!-- ✅ RECEIPT MODAL -->
-    <div id="receiptModal" class="hidden fixed inset-0 bg-black/60 z-50 justify-center items-center">
-        <div id="receiptContent" class="bg-white rounded-2xl shadow-lg w-[90%] max-w-md p-6 relative text-center">
-            <button onclick="closeReceiptModal()"
-                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold">×</button>
+    <!-- RECEIPT MODAL -->
+    <div id="receiptModal" class="receipt-modal">
+        <div id="receiptContent" class="receipt-content">
+            <button class="receipt-close-btn" onclick="closeModal()">×</button>
 
-            <div class="border-b pb-3">
-                <h2 class="text-3xl font-extrabold text-green-700">Farmly</h2>
-                <p class="text-sm text-gray-500">Fresh • Fast • Delivered</p>
+            <!-- Header -->
+            <div class="receipt-header">
+                <h2 class="receipt-title">Farmly</h2>
+                <p class="receipt-tagline">Fresh from us to you.</p>
             </div>
 
-            <div class="mt-4 space-y-3">
-                <div>
-                    <p class="text-gray-500 text-sm">Customer Name</p>
-                    <p id="receiptName" class="font-semibold text-gray-800 text-base">John Doe</p>
-                </div>
+            <!-- Customer Name -->
+            <div class="receipt-field">
+                <p class="receipt-label">Customer Name</p>
+                <p class="receipt-value" id="receiptName">John Doe</p>
+            </div>
 
-                <div>
-                    <p class="text-gray-500 text-sm">Transaction Reference</p>
-                    <p id="receiptRef" class="font-mono text-gray-800 text-sm">#REF123456</p>
-                </div>
+            <!-- Transaction Reference -->
+            <div class="receipt-field">
+                <p class="receipt-label">Transaction Reference</p>
+                <p class="receipt-value mono" id="receiptRef">#REF123456</p>
+            </div>
 
-                <div>
-                    <p class="text-gray-500 text-sm">Items Purchased</p>
-                    <ul id="receiptItems" class="receipt-item-list">
-                        <!-- JS will insert items here -->
-                    </ul>
+            <!-- Items -->
+            <div class="receipt-field">
+                <p class="receipt-label">Items Purchased</p>
+                <ul id="receiptItems" class="receipt-items"></ul>
+            </div>
+
+            <!-- Totals -->
+            <div class="receipt-summary">
+                <div class="receipt-subtotal">
+                    <span class="label">Subtotal:</span>
+                    <span id="receiptSubtotal" class="value">₦0</span>
+                </div>
+                <div class="receipt-total">
+                    <span class="label">Total:</span>
+                    <span id="receiptTotal" class="value">₦0</span>
                 </div>
             </div>
 
-            <div class="border-t mt-4 pt-4 text-sm">
-                <div class="flex justify-center gap-4 mb-1">
-                    <span class="text-gray-500">Subtotal:</span>
-                    <span id="receiptSubtotal" class="font-medium text-gray-800">₦0</span>
-                </div>
-                <div class="flex justify-center gap-4 font-semibold text-green-700">
-                    <span>Total:</span>
-                    <span id="receiptTotal">₦0</span>
-                </div>
-            </div>
-
-            <div class="text-center mt-6">
-                <p class="text-gray-500 text-xs mb-2">Thank you for shopping with <strong>Farmly</strong>!</p>
-                <button id="downloadReceiptBtn"
-                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow text-sm">
+            <!-- Footer -->
+            <div class="receipt-footer">
+                <p class="receipt-thankyou">
+                    Thank you for shopping with <strong>Farmly</strong>!
+                </p>
+                <button id="downloadReceiptBtn" class="receipt-download-btn">
                     Download PDF
                 </button>
             </div>
         </div>
     </div>
+
 
     <!-- DEPENDENCIES -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>

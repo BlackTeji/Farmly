@@ -144,7 +144,6 @@ ul {
     color: white;
 }
 
-/* Gradient Animation */
 @keyframes gradientFlow {
     0% {
         background-position: 0% 50%;
@@ -223,11 +222,9 @@ ul {
 html {
     overflow-x: hidden;
     overflow-y: auto;
-    /* vertical scroll allowed */
 }
 
 body {
     overflow-x: hidden;
     overflow-y: auto;
-    /* body scroll only */
 }

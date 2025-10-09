@@ -141,7 +141,7 @@ body {
 #delivery-info-box {
     max-width: 400px;
     margin: 0.8rem auto 1rem;
-    margin-top: 120px;
+    margin-top: 150px;
     padding: 10px 18px;
     background-color: #faf6ea;
     border-left: 4px solid #99b99a;
@@ -232,7 +232,6 @@ body {
     gap: 2rem;
 }
 
-
 .product-card {
     background: white;
     border-radius: 15px;
@@ -271,7 +270,7 @@ body {
     color: white;
     border: none;
     border-radius: 5px;
-    margin: 1px;
+    margin: 5px;
     cursor: pointer;
     transition: background 0.3s;
 }
@@ -544,117 +543,172 @@ body {
     background-color: #b0b0b0;
 }
 
-/*RECEIPT MODAL */
-#receiptModal {
+.receipt-modal {
+    display: none;
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.6);
-    display: none;
+    z-index: 1000;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    font-family: 'Inter', sans-serif;
 }
 
-#receiptModal.show {
+.receipt-modal.active {
     display: flex;
 }
 
-/* --- RECEIPT STYLING --- */
-
-#receiptContent {
-    background: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+/* === MODAL CONTENT === */
+.receipt-content {
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 420px;
-    padding: 2rem;
+    padding: 1.5rem;
+    position: relative;
     text-align: center;
-    animation: fadeIn 0.3s ease-out;
-    margin: auto;
 }
 
-#receiptContent h2 {
-    font-size: 2rem;
-    font-weight: 900;
-    color: #2a4d3c;
-    text-transform: uppercase;
-    margin-bottom: 0.8rem;
-    letter-spacing: 1px;
-}
-
-#receiptContent p,
-#receiptContent ul,
-#receiptContent li {
-    text-align: center;
-    margin: 0.3rem auto;
-    color: #333;
-    font-size: 1rem;
-}
-
-#receiptContent hr {
+.receipt-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: #9ca3af;
+    background: none;
     border: none;
-    border-top: 1px dashed #ccc;
-    margin: 1rem auto;
-    width: 80%;
-}
-
-.receipt-item-list {
-    list-style: none;
-    padding: 0;
-    margin: 1rem 0;
-}
-
-.receipt-item-list li {
-    padding: 0.4rem 0;
-    border-bottom: 1px dotted #ddd;
-    font-size: 1rem;
-}
-
-#receiptContent .total-row {
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-top: 1rem;
-}
-
-#downloadReceiptBtn {
-    background: #2a4d3c;
-    color: #fff;
-    padding: 0.7rem 1.5rem;
-    border: none;
-    border-radius: 8px;
+    font-weight: bold;
     cursor: pointer;
+    transition: color 0.2s;
+}
+
+.receipt-close-btn:hover {
+    color: #4b5563;
+}
+
+/* === HEADER === */
+.receipt-header {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.75rem;
+}
+
+.receipt-title {
+    font-size: 2.875rem;
+    font-weight: 800;
+    color: #15803d;
+    margin: 0;
+}
+
+.receipt-tagline {
+    font-size: 0.775rem;
+    color: #6b7280;
+    margin: 0;
+    font-style: italic;
+}
+
+.receipt-field {
+    margin: 0.75rem 0;
+    text-align: left;
+}
+
+.receipt-label {
+    font-size: 0.875rem;
+    color: #6d6c6c;
+    margin-bottom: 0.15rem;
+}
+
+.receipt-value {
+    font-size: 1rem;
+    font-weight: 200;
+    color: #1f2937;
+    margin: 0;
+}
+
+.receipt-value.mono {
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+/* === ITEM LIST === */
+.receipt-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 0.25rem;
+    border-top: 1px dashed #e5e7eb;
+}
+
+.receipt-items li {
+    padding: 0.25rem 0;
+    font-size: 0.9rem;
+    color: #374151;
+    border-bottom: 1px dashed #e5e7eb;
+}
+
+/* === SUMMARY (Subtotal & Total) === */
+.receipt-summary {
+    border-top: 1px solid #e5e7eb;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.receipt-subtotal,
+.receipt-total {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.receipt-subtotal .label {
+    color: #6b7280;
+}
+
+.receipt-subtotal .value {
+    color: #1f2937;
+    font-weight: 300;
+}
+
+.receipt-total {
+    font-weight: 400;
+    color: #15803d;
+}
+
+/* === FOOTER === */
+.receipt-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.receipt-thankyou {
+    font-size: 0.75rem;
+    color: #8b3737;
+    margin-bottom: 1rem;
+}
+
+.receipt-download-btn {
+    background: #15803d;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
     font-weight: 500;
-    margin-top: 1.2rem;
-    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s ease;
 }
 
-#downloadReceiptBtn:hover {
-    background: #1e3a2b;
-    transform: scale(1.03);
+.receipt-download-btn:hover {
+    background: #166534;
 }
 
-@media print {
-
-    #downloadReceiptBtn,
-    #receiptContent .close {
-        display: none !important;
-    }
-
-    #receiptContent {
-        box-shadow: none;
-        border: none;
-        width: 100%;
-        max-width: 500px;
-        margin: auto;
-    }
-
-    body {
-        background: white;
-    }
+body {
+    background: white;
 }
 
-
-/* Subtle animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -671,7 +725,6 @@ body {
     display: none;
 }
 
-/* Typography */
 h1,
 h2,
 h3,
@@ -858,11 +911,9 @@ ul li {
     }
 }
 
-
-/* Delivery Info Box */
 #delivery-info-box {
     max-width: 400px;
-    margin: 0.5rem auto 1.5rem auto;
+    margin: 7rem auto 1.5rem auto;
     padding: 12px 18px;
     background-color: #faf6ea;
     border-left: 4px solid #99b99a;
@@ -871,13 +922,10 @@ ul li {
     font-family: 'Inter', sans-serif;
     color: #2a4d3c;
     line-height: 1.6;
-    font-size: rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     position: relative;
-    top: -10px;
 }
 
-/* Headline inside box */
 #delivery-info-box h2 {
     font-weight: 400;
     font-size: 1.3rem;
@@ -886,7 +934,6 @@ ul li {
     letter-spacing: 0.5px;
 }
 
-/* Countdown / subtext */
 #delivery-info-box p {
     font-weight: 300;
     font-size: 0.8rem;
@@ -894,27 +941,13 @@ ul li {
     margin: 0;
 }
 
-@keyframes slideIn {
-    from {
-        transform: translateY(-20px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.animate-slide-in {
-    animation: slideIn 0.2s ease-out forwards;
-}
-
-/* Fade-in upward for delivery info box */
+/* ================================
+   ANIMATIONS
+=================================== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(15px);
     }
 
     to {
@@ -923,6 +956,26 @@ ul li {
     }
 }
 
-.fade-in-up {
-    animation: fadeInUp 0.2s ease-out forwards;
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
